@@ -38,6 +38,11 @@ jobs:
       - name: Configure Pages
         id: pages
         uses: actions/configure-pages@v5
+        with:
+          # Switches the Pages source to "GitHub Actions" via the API, so the
+          # repo does not have to be configured by hand first. Harmless once
+          # it is already set.
+          enablement: true
 
       - run: npm ci
 
