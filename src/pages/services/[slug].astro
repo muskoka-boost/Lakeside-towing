@@ -6,7 +6,8 @@ import RateTable from '../../components/RateTable.astro';
 import FaqList from '../../components/FaqList.astro';
 import ServiceGrid from '../../components/ServiceGrid.astro';
 import CtaBand from '../../components/CtaBand.astro';
-import { services, areas, business, rateByKey } from '../../data/site';
+import Photo from '../../components/Photo.astro';
+import { services, areas, business, rateByKey, photoById } from '../../data/site';
 import { url, abs, orgId } from '../../lib/paths';
 
 export function getStaticPaths() {
@@ -20,6 +21,7 @@ const trail = [
 ];
 
 const headline = service.rateKeys.map((k) => rateByKey(k)).filter(Boolean);
+const photo = service.photo ? photoById(service.photo) : undefined;
 const facts = [
   '24/7 dispatch',
   ...headline.slice(0, 1).map((r) => `${r.label}: ${r.price}${r.unit ? ` ${r.unit}` : ''}`),
@@ -34,6 +36,7 @@ const schema = [
     alternateName: service.h1,
     description: service.description,
     serviceType: service.name,
+    ...(photo ? { image: abs(Astro.site!, `/media/${photo.file}.jpg`) } : {}),
     provider: { '@id': orgId(Astro.site!) },
     areaServed: areas.map((a) => ({ '@type': 'City', name: a.name })),
     availableChannel: {
@@ -92,7 +95,17 @@ const schema = [
     facts={facts}
   />
 
-  <section class="section">
+  {
+    photo && (
+      <section class="section section-tight">
+        <div class="wrap wrap-photo">
+          <Photo id={service.photo!} loading="eager" />
+        </div>
+      </section>
+    )
+  }
+
+  <section class:list={['section', { 'section-after-photo': photo }]}>
     <div class="wrap service-body">
       <article class="prose">
         <h2>What&rsquo;s included</h2>
@@ -226,6 +239,20 @@ const schema = [
 </Layout>
 
 <style>
+  /* The photo sits between the hero and the copy, so it carries the section
+     padding above it but hands the space below to the text block. */
+  .section-tight {
+    padding-bottom: 0;
+  }
+
+  .section-after-photo {
+    padding-top: clamp(1.75rem, 4vw, 2.75rem);
+  }
+
+  .wrap-photo {
+    max-width: 1040px;
+  }
+
   .service-body {
     display: grid;
     gap: 2.5rem;

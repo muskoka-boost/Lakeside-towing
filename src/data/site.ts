@@ -45,6 +45,52 @@ export const credentials = [
 ];
 
 /* ------------------------------------------------------------------ *
+ * Photographs
+ * ------------------------------------------------------------------ */
+
+export interface Photo {
+  /** Basename in /media, without extension or width suffix. */
+  file: string;
+  /** Read aloud to blind visitors and shown when the image fails. Describe
+   *  what is happening, not what the file is called. */
+  alt: string;
+  /** Optional line printed under the photo. */
+  caption?: string;
+  width: number;
+  height: number;
+}
+
+/**
+ * Real photographs of the business at work, keyed by id.
+ *
+ * Every entry needs all four files that `scripts/prepare-photo.mjs` produces:
+ * <file>.jpg, <file>.webp, <file>-1280.webp and <file>-800.webp. Run that
+ * script on the original rather than adding a raw phone photo — an unresized
+ * 4 MB JPEG on a service page undoes a lot of the work done elsewhere to keep
+ * this site quick on a phone at the roadside.
+ */
+export const photos: Record<string, Photo> = {
+  'recovery-snowmobile-winter': {
+    file: 'recovery-snowmobile-winter',
+    width: 1500,
+    height: 1000,
+    alt: 'Two Lakeside Towing crew members lifting a snowmobile out of a deep snowbank at Bay Street and Jarvis Street in Orillia, with the black Lakeside recovery pickup parked on the plowed road beside them.',
+    caption:
+      'Snowmobile pulled out of the bank at Bay and Jarvis, Orillia. Winter recovery work is a large share of what we do between December and April.',
+  },
+  'tow-truck-night-hookup': {
+    file: 'tow-truck-night-hookup',
+    width: 1600,
+    height: 1067,
+    alt: 'A white Lakeside Towing & Recovery wrecker hooked up to a vehicle at a lit intersection after dark, its amber and red service lights showing against a deep blue dusk sky.',
+    caption:
+      'Hooked up after dark. The number is answered at 3 a.m. the same as it is at 3 p.m., and a truck goes out.',
+  },
+};
+
+export const photoById = (id: string): Photo | undefined => photos[id];
+
+/* ------------------------------------------------------------------ *
  * Services
  * ------------------------------------------------------------------ */
 
@@ -62,6 +108,8 @@ export interface Service {
   intro: string;
   icon: string;
   featured?: boolean;
+  /** Key into `photos`. Omit and the page simply runs without one. */
+  photo?: string;
   /** What the job actually includes. */
   includes: string[];
   /** Numbered "how it works" steps. */
@@ -87,6 +135,7 @@ export const services: Service[] = [
       'Most of our calls are not planned. A car dies in the Walmart lot on a Sunday night, a transmission lets go on the 11 north of town, someone slides into the ditch on Old Barrie Road in February. We keep trucks staffed for exactly that — any hour, any day, including holidays.',
     icon: 'truck',
     featured: true,
+    photo: 'tow-truck-night-hookup',
     includes: [
       'Flatbed and wheel-lift trucks for cars, vans, SUVs and light trucks',
       'Collision recovery with debris clean-up at the scene',
@@ -159,6 +208,7 @@ export const services: Service[] = [
       'A recovery is not a tow. A tow moves a vehicle that is sitting on a road; a recovery gets a vehicle back onto the road first. Ditches, snowbanks, soft spring shoulders, mud at a boat launch, sand on a cottage lane — all of it is winch work, and all of it is billed by the hour rather than by the trip.',
     icon: 'anchor',
     featured: true,
+    photo: 'recovery-snowmobile-winter',
     includes: [
       'Ditch and embankment recovery on and off the highway',
       'Snowbank and unplowed-laneway extraction through the winter',
@@ -621,6 +671,8 @@ export interface Area {
   h1: string;
   /** Distance / drive-time framing from the Orillia yard. */
   proximity: string;
+  /** Key into `photos`. Omit and the page simply runs without one. */
+  photo?: string;
   intro: string;
   /** Roads and landmarks — real local detail, not filler. */
   body: { heading: string; text: string }[];
@@ -637,6 +689,7 @@ export const areas: Area[] = [
     description:
       'Local 24/7 tow truck service in Orillia, Ontario. Towing, boosts, lockouts, fuel delivery and winch-outs. OPP approved. Call (249) 385-5240.',
     proximity: 'Our home city — the yard is on Norweld Dr.',
+    photo: 'recovery-snowmobile-winter',
     intro:
       'Orillia is home. Our yard is on Norweld Dr, which means we are not dispatching a truck from Barrie or Bracebridge and hoping the traffic cooperates. For most calls inside the city we are looking at 30 to 45 minutes.',
     body: [

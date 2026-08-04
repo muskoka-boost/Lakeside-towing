@@ -187,13 +187,49 @@ All in `public/media/`, referenced with relative paths — nothing is hotlinked.
 | `logo.{webp,jpg}` | Header and footer logo |
 | `mto-vehicle-storage-certificate.{webp,jpg}` | Certificate shown on `/about/` |
 | `og-lakeside-towing.jpg` | 1200×630 social share image |
+| `recovery-snowmobile-winter.*` | Snowmobile recovery at Bay & Jarvis, Orillia |
+| `tow-truck-night-hookup.*` | White wrecker hooked up after dark |
 
 To swap the hero, replace the three `hero-tow-truck-*.webp` files (1920, 1280
 and 800 px wide) plus the `.jpg` fallback, keeping the filenames.
 
-**No stock photography is used anywhere on this site.** Every image is the
-business's own. The design carries the visual weight through colour, type and
-inline SVG iconography instead, which is why three real assets are enough.
+> **The hero is not a Lakeside truck.** `hero-tow-truck.jpg` is a stock/generated
+> image of a 1950s wrecker with no company branding on it. It should be replaced
+> with a real photograph as soon as one of the right shape is available. The
+> photographs listed below *are* the business's own.
+
+#### Adding a photograph
+
+Photos arrive from a phone at whatever size the camera produced. Rather than
+hand-tuning each one, run:
+
+```bash
+node scripts/prepare-photo.mjs <source.jpg> <output-name> [aspect]
+# e.g. node scripts/prepare-photo.mjs ~/flatbed.jpg flatbed-loading-orillia 3:2
+```
+
+That writes the four files the site serves — `.jpg` fallback, `.webp`, and
+`-1280.webp` / `-800.webp` — with a centred crop, and prints the registry entry
+to paste into `photos` in `src/data/site.ts`. Fill in real `alt` text describing
+what is happening; it is read aloud to blind visitors and it is not optional.
+
+Then point a page at it by adding `photo: '<output-name>'` to that service in
+`services` or that town in `areas`. The `<Photo>` component handles the
+responsive markup, the caption and the lazy loading; the JSON-LD for the page
+picks the image up automatically. A page with no `photo` key simply renders
+without one, so photos can be added a few at a time.
+
+Where they are used today:
+
+| Page | Photo |
+|---|---|
+| `/services/emergency-towing/` | `tow-truck-night-hookup` |
+| `/services/winch-out-recovery/` | `recovery-snowmobile-winter` |
+| `/service-areas/orillia/` | `recovery-snowmobile-winter` |
+
+The remaining service and area pages have no photograph yet and are the obvious
+homes for the next batch — a flatbed loading, a boost or lockout in progress,
+the storage yard, and the trucks in Rama, Washago, Gravenhurst or Barrie.
 
 ---
 

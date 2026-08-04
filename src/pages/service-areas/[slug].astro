@@ -6,7 +6,8 @@ import ServiceGrid from '../../components/ServiceGrid.astro';
 import RateTable from '../../components/RateTable.astro';
 import FaqList from '../../components/FaqList.astro';
 import CtaBand from '../../components/CtaBand.astro';
-import { areas, services, business, addressLine } from '../../data/site';
+import Photo from '../../components/Photo.astro';
+import { areas, services, business, addressLine, photoById } from '../../data/site';
 import { url, abs, orgId } from '../../lib/paths';
 
 export function getStaticPaths() {
@@ -20,6 +21,7 @@ const trail = [
 ];
 
 const otherAreas = areas.filter((a) => a.slug !== area.slug);
+const photo = area.photo ? photoById(area.photo) : undefined;
 
 const schema = [
   {
@@ -28,6 +30,7 @@ const schema = [
     name: `Towing in ${area.name}`,
     description: area.description,
     serviceType: 'Towing service',
+    ...(photo ? { image: abs(Astro.site!, `/media/${photo.file}.jpg`) } : {}),
     provider: { '@id': orgId(Astro.site!) },
     areaServed: {
       '@type': 'City',
@@ -72,7 +75,17 @@ const schema = [
     facts={[area.proximity, '24/7 dispatch', 'All services available']}
   />
 
-  <section class="section">
+  {
+    photo && (
+      <section class="section section-tight">
+        <div class="wrap wrap-photo">
+          <Photo id={area.photo!} loading="eager" />
+        </div>
+      </section>
+    )
+  }
+
+  <section class:list={['section', { 'section-after-photo': photo }]}>
     <div class="wrap area-body">
       <article class="prose">
         {
@@ -195,6 +208,20 @@ const schema = [
 </Layout>
 
 <style>
+  /* Matches the service pages: the photo keeps the padding above it and hands
+     the space below to the copy that follows. */
+  .section-tight {
+    padding-bottom: 0;
+  }
+
+  .section-after-photo {
+    padding-top: clamp(1.75rem, 4vw, 2.75rem);
+  }
+
+  .wrap-photo {
+    max-width: 1040px;
+  }
+
   .area-body {
     display: grid;
     gap: 2.5rem;
