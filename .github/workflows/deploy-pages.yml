@@ -46,11 +46,19 @@ jobs:
 
       - run: npm ci
 
+      # configure-pages reports an http:// origin when it cannot read a real
+      # Pages configuration. Pages is always served over https, and canonical
+      # and Open Graph URLs must not go out with the wrong scheme.
+      - name: Resolve site URL
+        run: |
+          origin='${{ steps.pages.outputs.origin }}'
+          origin="${origin:-https://muskoka-boost.github.io}"
+          echo "SITE_URL=${origin/#http:\/\//https://}" >> "$GITHUB_ENV"
+
       - name: Build
         env:
-          # Derived from the Pages settings rather than hard-coded, so this
-          # keeps working if the repo is renamed or a custom domain is added.
-          SITE_URL: ${{ steps.pages.outputs.origin }}
+          # Base path comes from the Pages settings rather than being
+          # hard-coded, so a repo rename or custom domain needs no edit here.
           BASE_PATH: ${{ steps.pages.outputs.base_path }}
           PUBLIC_PREVIEW: 'true'
         run: npm run build
