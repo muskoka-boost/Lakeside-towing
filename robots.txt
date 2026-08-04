@@ -1,0 +1,5 @@
+# Preview build — not the live site.
+# https://www.lakesidetowingorillia.com is the real one.
+
+User-agent: *
+Disallow: /
