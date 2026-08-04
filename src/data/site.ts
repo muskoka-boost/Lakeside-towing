@@ -144,151 +144,8 @@ export const services: Service[] = [
         a: 'Many policies include roadside or towing coverage, and most collision claims cover the tow to a shop. We are not able to bill your insurer directly in every case, so ask us for a receipt with the full details and submit it with your claim.',
       },
     ],
-    rateKeys: ['in-town', 'dollies', 'long-distance'],
-    related: ['long-distance-towing', 'winch-out-recovery', 'vehicle-storage'],
-  },
-  {
-    slug: 'long-distance-towing',
-    name: 'Long Distance Towing',
-    h1: 'Long Distance Towing from Orillia',
-    title: 'Long Distance Towing from Orillia | Lakeside Towing',
-    description:
-      'Long haul vehicle transport from Orillia to Toronto, Ottawa, Sudbury or anywhere in Ontario. Flat rate plus per-km pricing. Call (249) 385-5240.',
-    summary: 'Highway hauls across Ontario and beyond, priced by the kilometre.',
-    intro:
-      'Sometimes the vehicle does not need to go across town — it needs to go to a specialist in Toronto, back to a dealership in Ottawa, or up to a cottage in the near north. We run those hauls with a per-kilometre rate on top of a flat base, so you know the number before we leave the yard.',
-    icon: 'route',
-    featured: true,
-    includes: [
-      'Point-to-point transport anywhere in Ontario and into neighbouring provinces and states',
-      'Dealership transfers, auction pickups and private-sale deliveries',
-      'Non-running project vehicles loaded with winch and dollies',
-      'Scheduled pickups — you pick the day, we work around your shop hours',
-      'One driver, one truck, one handoff: your vehicle is not transloaded partway',
-    ],
-    steps: [
-      {
-        title: 'Give us both addresses',
-        body: 'Pickup and drop-off, plus whether the vehicle runs, steers and brakes. That determines whether it goes on the flatbed under its own power or gets winched.',
-      },
-      {
-        title: 'We work out the distance and quote it',
-        body: 'A flat base plus a per-kilometre rate for the loaded distance. Dollies, if the vehicle needs them, are added at a separate flat plus per-kilometre rate.',
-      },
-      {
-        title: 'We book a window',
-        body: 'Long hauls get scheduled rather than dispatched. We will agree on a pickup window that works with the receiving shop or dealership hours.',
-      },
-      {
-        title: 'Handoff and paperwork',
-        body: 'We confirm the drop with you, and you get a receipt itemising base, distance and any extras — the document your insurer or your accountant will want.',
-      },
-    ],
-    body: [
-      {
-        heading: 'Where we run from Orillia',
-        text: 'Orillia sits at the junction of Highway 11 and Highway 12, which makes it a practical base for long hauls in any direction. Toronto and the GTA are the most common southbound run; northbound we go through Gravenhurst and Bracebridge toward Huntsville, North Bay and Sudbury. East and west along the 12 and the 400 corridor are routine. We will quote runs outside Ontario as well.',
-      },
-      {
-        heading: 'Project cars, non-runners and estate vehicles',
-        text: 'A vehicle that has not moved in ten years is a different job from one that broke down yesterday — the tyres may be flat, the brakes seized, the steering locked. Tell us that up front so we bring dollies and a winch and budget the time. We would rather quote it correctly than surprise you at the gate.',
-      },
-      {
-        heading: 'Why per-kilometre beats a guessed flat rate',
-        text: 'A single flat number for "long distance" has to be padded to cover the worst case, which means short-long hauls subsidise the truly long ones. Charging a base plus a rate per kilometre means a 90 km run to Barrie and back costs what a 90 km run costs, and you can check the arithmetic yourself on the receipt.',
-      },
-    ],
-    faqs: [
-      {
-        q: 'How is long distance priced?',
-        a: `A flat base of ${'$'}200 plus ${'$'}3.50 per kilometre. If the vehicle needs dollies, that is an extra ${'$'}50 plus ${'$'}0.50 per kilometre. We confirm the exact figure with you before booking — see the rates page for the full list.`,
-      },
-      {
-        q: 'Do you charge for the empty return trip?',
-        a: 'The per-kilometre rate is quoted on the run as we price it for you. Ask when you call and we will break down exactly what the number covers for your specific route so there is no ambiguity.',
-      },
-      {
-        q: 'Can you tow out of province or into the US?',
-        a: 'We will quote runs into neighbouring provinces and across the border. Border crossings involve extra paperwork and time, so give us as much notice as you can and have the ownership and your ID ready.',
-      },
-      {
-        q: 'Can you pick up a car I just bought online?',
-        a: 'Yes — private sales, auctions and dealer transfers are regular work. We need the seller reachable at the pickup address, and we need to know whether the vehicle runs and whether there are keys.',
-      },
-    ],
-    rateKeys: ['long-distance', 'long-distance-dollies'],
-    related: ['enclosed-transport', 'emergency-towing', 'vehicle-storage'],
-  },
-  {
-    slug: 'enclosed-transport',
-    name: 'Enclosed Transport',
-    h1: 'Enclosed Vehicle Transport',
-    title: 'Enclosed Car Transport in Orillia | Lakeside Towing',
-    description:
-      'Fully enclosed carrier transport for classic cars, luxury vehicles and motorcycles in Orillia and across Ontario. Call (249) 385-5240.',
-    summary: 'Covered carrier service for classics, exotics and motorcycles.',
-    intro:
-      'An open flatbed is fine for a daily driver. It is not fine for fresh paint, a restored numbers-matching car, or a motorcycle in November. Enclosed transport puts a roof and four walls between your vehicle and the 401 — no stone chips, no road salt, no weather, and nobody at a rest stop taking photographs of it.',
-    icon: 'shield',
-    includes: [
-      'Fully enclosed trailer — vehicle is not visible or exposed in transit',
-      'Soft straps and wheel-net tie-downs rather than chassis chains',
-      'Low-clearance loading for lowered suspension and long front splitters',
-      'Motorcycles secured with wheel chock and handlebar straps',
-      'Condition documented with photographs at load and at delivery',
-    ],
-    steps: [
-      {
-        title: 'Tell us what it is',
-        body: 'Year, make, model, ride height, whether it runs, and any quirk we should know — a temperamental starter, no reverse, a battery cut-off switch under the seat.',
-      },
-      {
-        title: 'We confirm fit and quote',
-        body: 'Ground clearance and wheelbase determine loading approach. We will tell you honestly if a vehicle is better suited to a different method.',
-      },
-      {
-        title: 'Documented loading',
-        body: 'We photograph the vehicle before it goes in, note any existing marks with you, and strap it by the wheels so nothing loads the suspension or the bodywork.',
-      },
-      {
-        title: 'Delivery and sign-off',
-        body: 'Same photographs at the other end, walked around with whoever receives it.',
-      },
-    ],
-    body: [
-      {
-        heading: 'Show season, auction runs and cottage cars',
-        text: 'Cottage country runs on a seasonal rhythm and so does this service. Spring is cars coming out of winter storage and heading to the first shows; autumn is the reverse, plus the vehicles being moved south before the roads get salted. Book those two windows early — everyone in Muskoka and Simcoe wants the same two weekends.',
-      },
-      {
-        heading: 'Why salt is the real argument for enclosed',
-        text: 'Ontario road salt is aggressive, and the spray off a highway in March reaches everything underneath a vehicle on an open deck. For a restored car with bare metal in the underbody or a fresh respray, one open-deck run in the wrong month can undo real money in bodywork. The enclosed trailer is cheap insurance against that.',
-      },
-      {
-        heading: 'Motorcycles',
-        text: 'Bikes go in the enclosed trailer on a wheel chock with soft straps at the triple clamp, not ratcheted down on the bars hard enough to bottom the forks for the whole trip. A tarp on an open trailer is not transport for a motorcycle, and neither is a pickup bed with two bungees.',
-      },
-    ],
-    faqs: [
-      {
-        q: 'Is enclosed transport more expensive?',
-        a: 'Yes — the equipment costs more to run and carries fewer vehicles. We quote it per job based on distance and the vehicle. Call with the route and the car and we will give you a number.',
-      },
-      {
-        q: 'Can you move a car that does not run?',
-        a: 'Yes. Non-running vehicles are winched in. We need to know in advance whether it steers and whether the brakes are free, because that changes how we load it.',
-      },
-      {
-        q: 'How low is too low?',
-        a: 'We handle lowered vehicles routinely using ramps and boards. Tell us the ground clearance at the lowest point — usually the front splitter or the exhaust — and we will tell you whether it clears.',
-      },
-      {
-        q: 'Do you transport more than one vehicle at a time?',
-        a: 'Ask when you call. Depending on the vehicles and the route it can sometimes be done in one run, which is cheaper than two separate trips.',
-      },
-    ],
-    rateKeys: ['long-distance'],
-    related: ['long-distance-towing', 'vehicle-storage', 'emergency-towing'],
+    rateKeys: ['in-town', 'dollies', 'out-of-town'],
+    related: ['winch-out-recovery', 'vehicle-storage', 'battery-boost'],
   },
   {
     slug: 'winch-out-recovery',
@@ -360,7 +217,7 @@ export const services: Service[] = [
       },
     ],
     rateKeys: ['winch-out', 'in-town'],
-    related: ['emergency-towing', 'vehicle-storage', 'long-distance-towing'],
+    related: ['emergency-towing', 'vehicle-storage', 'battery-boost'],
   },
   {
     slug: 'battery-boost',
@@ -644,7 +501,7 @@ export const services: Service[] = [
       },
     ],
     rateKeys: ['in-town'],
-    related: ['emergency-towing', 'enclosed-transport', 'winch-out-recovery'],
+    related: ['emergency-towing', 'winch-out-recovery', 'lockout-service'],
   },
 ];
 
@@ -668,7 +525,7 @@ export const rates: Rate[] = [
     key: 'in-town',
     label: 'In-town tow',
     price: '$100 – $200',
-    note: 'Orillia and the immediate surrounding area. Where you land in the range depends on the vehicle, the pickup and how much work the hook-up takes.',
+    note: 'Within Orillia. Where you land in the range depends on the vehicle, the pickup and how much work the hook-up takes.',
     group: 'Towing',
   },
   {
@@ -680,19 +537,19 @@ export const rates: Rate[] = [
     group: 'Towing',
   },
   {
-    key: 'long-distance',
-    label: 'Long distance tow',
+    key: 'out-of-town',
+    label: 'Out-of-town tow',
     price: '$200',
     unit: '+ $3.50 / km',
-    note: 'Flat base plus a per-kilometre rate. We work out the exact figure with you before booking.',
+    note: 'Anywhere outside Orillia inside our service area — Rama, Washago, Gravenhurst, Barrie and the communities around the lakes. Flat base plus a per-kilometre rate, worked out with you before we dispatch.',
     group: 'Towing',
   },
   {
-    key: 'long-distance-dollies',
-    label: 'Wheel dollies (long distance)',
+    key: 'out-of-town-dollies',
+    label: 'Wheel dollies (out of town)',
     price: '$50',
     unit: '+ $0.50 / km',
-    note: 'Added to a long distance tow when the vehicle needs dollies for the haul.',
+    note: 'Added to an out-of-town tow when the vehicle needs dollies for the run.',
     group: 'Towing',
   },
   {
@@ -740,6 +597,18 @@ export const rateGroups = ['Towing', 'Recovery', 'Roadside Assistance'] as const
 export const ratesDisclaimer =
   'These are our typical rates, not a fixed price list. What you actually pay depends on the vehicle, the distance, the conditions and how much work the job takes. You will always get a firm price on the phone before a truck is dispatched — nothing is decided after the fact.';
 
+/**
+ * The coverage rule, in the business's own terms: they work their service
+ * area, and the in-town rate stops at the Orillia city limits. Stated in one
+ * place because it appears on the rates, services and service-area pages.
+ */
+export const serviceAreaPolicy = {
+  headline: 'We work our local service area',
+  short: 'Orillia is in town. Everywhere else we go is out of town.',
+  long:
+    'We are a local operator, so we stay local. Our work is Orillia and the surrounding communities — Rama, Washago, Gravenhurst, Barrie and the smaller places around Lake Couchiching. Anywhere outside Orillia is treated as out of town and priced accordingly. We do not run long distance hauls across Ontario, and we do not offer enclosed transport. If your job is outside our area, call anyway and we will tell you straight away rather than waste your time.',
+};
+
 /* ------------------------------------------------------------------ *
  * Service areas
  * ------------------------------------------------------------------ */
@@ -781,7 +650,7 @@ export const areas: Area[] = [
       },
       {
         heading: 'Every service, in town',
-        text: 'Everything we do is available in Orillia: emergency towing, long distance hauls out of the city, enclosed transport, winch-outs, boosts, lockouts, fuel delivery, and storage in our MTO-licensed yard right here in town. Because storage is local, a vehicle towed in Orillia after a collision does not have to travel again to be stored.',
+        text: 'Everything we do is available in Orillia: emergency towing, winch-outs, boosts, lockouts, fuel delivery, and storage in our MTO-licensed yard right here in town. Orillia is also the one place that gets the in-town tow rate — every other community we serve is priced as an out-of-town run. Because storage is local, a vehicle towed in Orillia after a collision does not have to travel again to be stored.',
       },
     ],
     landmarks: [
@@ -828,7 +697,7 @@ export const areas: Area[] = [
       },
       {
         heading: 'What we cover here',
-        text: 'Full service: emergency towing, long distance runs from Gravenhurst south to the GTA or further north, winch-out and recovery, boosts, lockouts and fuel delivery. Response times run longer than in Orillia because of the distance — expect to add the drive time to a normal window, and more in bad weather.',
+        text: 'Full service: emergency towing, winch-out and recovery, boosts, lockouts and fuel delivery. Gravenhurst sits at the northern edge of our service area, and every job here is priced as an out-of-town run rather than at the in-town rate. Response times run longer than in Orillia because of the distance — expect to add the drive time to a normal window, and more in bad weather.',
       },
     ],
     landmarks: [
@@ -887,7 +756,7 @@ export const areas: Area[] = [
     faqs: [
       {
         q: 'Is Washago in your normal service area?',
-        a: 'Very much so — it is about 15 minutes from the yard and one of our closest calls outside Orillia. Normal rates apply.',
+        a: 'Very much so — it is about 15 minutes from the yard and one of our closest calls outside Orillia. Because it is outside the city, a tow here is quoted at our out-of-town rate. You will hear the number before we dispatch.',
       },
       {
         q: 'I am stuck on a sandy shoulder near the river. Is that a tow?',
@@ -920,7 +789,7 @@ export const areas: Area[] = [
       },
       {
         heading: 'Nearby communities',
-        text: 'We also serve the small lakeside communities strung along this side of the lake — Grays Bay, Menoke Beach, Amigo Beach, Geneva Park and Cumberland Beach among them. They are all inside our normal service area and none of them are far.',
+        text: 'We also serve the small lakeside communities strung along this side of the lake — Grays Bay, Menoke Beach, Amigo Beach, Geneva Park and Cumberland Beach among them. They are all inside our normal service area and none of them are far, though being outside Orillia they are all quoted as out-of-town tows.',
       },
     ],
     landmarks: [
@@ -940,8 +809,8 @@ export const areas: Area[] = [
         a: 'Usually yes. Tell us whether the lane is plowed and how tight it is, and give us the fire number — that is what actually gets us to the right driveway out there.',
       },
       {
-        q: 'Is Rama charged as in-town or long distance?',
-        a: 'Rama is inside our normal service area, so in-town rates apply. If you are further out along the corridor, ask when you call and we will confirm the price before dispatching.',
+        q: 'Is Rama charged as in-town or out of town?',
+        a: 'Out of town. Rama is well inside our normal service area, but the in-town rate applies only within Orillia itself, so a tow here is quoted as an out-of-town run. Roadside calls — boosts, lockouts, fuel — are the same flat $80 wherever you are in our area.',
       },
     ],
   },
@@ -949,12 +818,12 @@ export const areas: Area[] = [
     slug: 'barrie',
     name: 'Barrie',
     h1: 'Towing in Barrie & the Highway 11 South Corridor',
-    title: 'Towing in Barrie ON | Tow Truck & Transport | Lakeside',
+    title: 'Towing in Barrie ON | Tow Truck & Recovery | Lakeside',
     description:
-      'Towing, recovery and long distance vehicle transport serving Barrie and the Highway 11 / Highway 400 corridor south of Orillia. Call (249) 385-5240.',
-    proximity: 'About 35 minutes south on Highway 11.',
+      'Towing, winch-out recovery and roadside assistance in Barrie and along the Highway 11 corridor south of Orillia, at out-of-town rates. Call (249) 385-5240.',
+    proximity: 'About 35 minutes south on Highway 11 — the southern edge of our area.',
     intro:
-      'Barrie is a straight run south for us and a regular destination — both for calls originating there and for vehicles being moved between Barrie and the Orillia area. The Highway 11 and Highway 400 corridor between the two cities is one of our busiest stretches of road.',
+      'Barrie is a straight run south for us and marks the southern edge of our service area. The Highway 11 corridor between the two cities is one of our busiest stretches of road, and calls along it are regular work. Being outside Orillia, everything here is quoted as an out-of-town tow.',
     body: [
       {
         heading: 'The corridor between Barrie and Orillia',
@@ -962,23 +831,23 @@ export const areas: Area[] = [
       },
       {
         heading: 'Dealership and shop transfers',
-        text: 'A lot of the Barrie work is scheduled rather than emergency: vehicles going to a Barrie dealership for warranty work, cars bought in Barrie being delivered to Orillia and the lakes, and shop-to-shop transfers between the two cities. Those are booked in advance with an agreed window, and priced as a long distance run — base plus per kilometre.',
+        text: 'A lot of the Barrie work is scheduled rather than emergency: vehicles going to a Barrie dealership for warranty work, cars bought in Barrie being delivered to Orillia and the lakes, and shop-to-shop transfers between the two cities. Those are booked in advance with an agreed window, and priced as an out-of-town run — base plus per kilometre.',
       },
       {
-        heading: 'Long distance beyond Barrie',
-        text: 'Barrie is also the gateway to everything south. If your vehicle needs to get to the GTA, Mississauga or the airport, that run goes through Barrie and we quote it the same way: a flat base plus a rate per kilometre, worked out before we book it.',
+        heading: 'Where our area stops',
+        text: 'Barrie is about as far south as we go. We are a local operator working a local patch, so we do not run hauls down to the GTA, out to Ottawa or up to Sudbury — that is not our business and pretending otherwise would only leave you waiting. If your vehicle needs to travel further than our area, call us anyway: we will say so on the first call rather than string you along.',
       },
     ],
     landmarks: [
-      'Highway 11 south to Highway 400',
+      'Highway 11 south toward Barrie',
       'Barrie dealerships and service centres',
-      'Highway 400 corridor toward the GTA',
       'Oro-Medonte and the townships in between',
+      'Lake Simcoe\'s west shore',
     ],
     faqs: [
       {
         q: 'Is Barrie in your service area?',
-        a: 'Yes. It is about 35 minutes south of the yard. Depending on where exactly you are, it may be quoted as a long distance run — we will tell you the price when you call.',
+        a: 'Yes, and it is roughly the southern limit of it — about 35 minutes south of the yard. Because it is outside Orillia, a tow is quoted at our out-of-town rate, and you will hear the number before we dispatch.',
       },
       {
         q: 'Can you move a car between Barrie and Orillia?',
@@ -986,7 +855,7 @@ export const areas: Area[] = [
       },
       {
         q: 'Do you tow from Barrie to Toronto?',
-        a: 'Yes — that is a long distance run, quoted as a flat base plus a per-kilometre rate. Give us both addresses and we will work out the number.',
+        a: 'No. We do not do long distance towing — we work Orillia and the surrounding area, and Barrie is about as far south as we go. For a run into the GTA you want a long-haul carrier rather than us.',
       },
     ],
   },
@@ -1029,11 +898,19 @@ export const generalFaqs = [
   },
   {
     q: 'How much does a tow cost?',
-    a: `An in-town tow typically runs ${'$'}100 to ${'$'}200. Long distance is ${'$'}200 plus ${'$'}3.50 per kilometre. Roadside calls — boost, lockout, fuel — are ${'$'}80. Full list on our rates page, and you always get a firm price on the phone before a truck is dispatched.`,
+    a: `An in-town tow — inside Orillia — typically runs ${'$'}100 to ${'$'}200. Anywhere outside Orillia is an out-of-town tow at ${'$'}200 plus ${'$'}3.50 per kilometre. Roadside calls — boost, lockout, fuel — are ${'$'}80. Full list on our rates page, and you always get a firm price on the phone before a truck is dispatched.`,
   },
   {
     q: 'What areas do you serve?',
-    a: 'Orillia and the surrounding area, including Rama, Washago, Gravenhurst, Barrie, Cumberland Beach, Geneva Park, Grays Bay and the smaller communities around Lake Couchiching. If you are not sure whether you are in range, call and ask.',
+    a: 'Orillia and the surrounding area, including Rama, Washago, Gravenhurst, Barrie, Cumberland Beach, Geneva Park, Grays Bay and the smaller communities around Lake Couchiching. We work our own patch rather than chasing jobs across the province. If you are not sure whether you are in range, call and ask.',
+  },
+  {
+    q: 'What is the difference between in town and out of town?',
+    a: 'Orillia is in town. Everywhere else we go — Rama, Washago, Gravenhurst, Barrie and the lakeside communities — is out of town, and a tow there is quoted at the out-of-town rate rather than the in-town range. Flat-rate roadside calls cost the same anywhere in our area.',
+  },
+  {
+    q: 'Do you do long distance towing or enclosed transport?',
+    a: 'No to both. We do not run long distance hauls across Ontario or into other provinces, and we do not operate an enclosed carrier. We are a local towing and recovery outfit working Orillia and the surrounding area. If your job needs either of those, call us anyway and we will tell you plainly that it is not ours.',
   },
   {
     q: 'Are you OPP approved?',

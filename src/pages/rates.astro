@@ -5,19 +5,27 @@ import Icon from '../components/Icon.astro';
 import RateTable from '../components/RateTable.astro';
 import FaqList from '../components/FaqList.astro';
 import CtaBand from '../components/CtaBand.astro';
-import { business, rates, rateGroups, ratesDisclaimer } from '../data/site';
+import { business, rates, rateGroups, ratesDisclaimer, serviceAreaPolicy } from '../data/site';
 import { orgId } from '../lib/paths';
 
 const title = 'Towing Rates in Orillia | Lakeside Towing & Recovery';
 const description =
-  'Typical towing rates in Orillia: in-town tows $100-$200, long distance $200 + $3.50/km, winch-out $250/hr, boosts and lockouts $80. Quoted up front.';
+  'Typical towing rates in Orillia: in-town tows $100-$200, out-of-town $200 + $3.50/km, winch-out $250/hr, boosts and lockouts $80. Quoted up front.';
 
 const trail = [{ name: 'Rates', href: '/rates/' }];
 
 const rateFaqs = [
   {
     q: 'How much does a tow cost in Orillia?',
-    a: `An in-town tow typically runs ${'$'}100 to ${'$'}200 depending on the vehicle, where it is and how much work the hook-up takes. Long distance is ${'$'}200 plus ${'$'}3.50 per kilometre. You will get a firm number on the phone before a truck is dispatched.`,
+    a: `An in-town tow typically runs ${'$'}100 to ${'$'}200 depending on the vehicle, where it is and how much work the hook-up takes. Outside Orillia it is an out-of-town tow at ${'$'}200 plus ${'$'}3.50 per kilometre. You will get a firm number on the phone before a truck is dispatched.`,
+  },
+  {
+    q: 'What counts as in town, and what counts as out of town?',
+    a: 'Orillia is in town. Everywhere else we serve — Rama, Washago, Gravenhurst, Barrie, Cumberland Beach and the rest of the lakeside communities — is out of town, and a tow there is quoted on the out-of-town rate. Flat-rate roadside calls are the same price anywhere in our service area.',
+  },
+  {
+    q: 'Do you quote long distance hauls?',
+    a: 'No. We do not do long distance towing and we do not run enclosed transport. We work Orillia and the surrounding area, so if your vehicle needs to get to Toronto, Ottawa or Sudbury, a long-haul carrier is the right call rather than us.',
   },
   {
     q: 'Why is there a range on the in-town price?',
@@ -25,7 +33,7 @@ const rateFaqs = [
   },
   {
     q: 'When do I need dollies, and what do they cost?',
-    a: `Dollies go under wheels that cannot roll freely — all-wheel-drive vehicles, seized brakes, locked steering, missing wheels. In town that is a flat ${'$'}45. On a long distance run it is ${'$'}50 plus ${'$'}0.50 per kilometre.`,
+    a: `Dollies go under wheels that cannot roll freely — all-wheel-drive vehicles, seized brakes, locked steering, missing wheels. In town that is a flat ${'$'}45. On an out-of-town run it is ${'$'}50 plus ${'$'}0.50 per kilometre.`,
   },
   {
     q: 'Is a ditch recovery charged as a tow?',
@@ -107,6 +115,14 @@ const priceSchema = {
         <Icon name="info" size={19} />
         <span>{ratesDisclaimer}</span>
       </p>
+
+      <div class="policy">
+        <Icon name="map-pin" size={20} />
+        <div>
+          <strong>{serviceAreaPolicy.headline}</strong>
+          <p>{serviceAreaPolicy.long}</p>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -137,9 +153,9 @@ const priceSchema = {
           <Icon name="route" size={24} />
           <h3>The distance</h3>
           <p>
-            In town is a flat range. Anything beyond that is a base plus a
-            per-kilometre rate, so a longer run costs proportionally more rather
-            than being guessed at.
+            Inside Orillia is a flat range. Anywhere outside the city is out of
+            town — a base plus a per-kilometre rate, so a longer run costs
+            proportionally more rather than being guessed at.
           </p>
         </div>
         <div class="card">
@@ -231,6 +247,41 @@ const priceSchema = {
   .disclaimer :global(.icon) {
     flex: none;
     margin-top: 3px;
+  }
+
+  .policy {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.7rem;
+    margin-top: 1rem;
+    padding: 1.15rem 1.3rem;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--red);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  }
+
+  .policy :global(.icon) {
+    flex: none;
+    margin-top: 3px;
+    color: var(--red);
+  }
+
+  .policy strong {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 1.16rem;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--navy-deep);
+    margin-bottom: 0.25rem;
+  }
+
+  .policy p {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--ink-soft);
   }
 
   .factors {

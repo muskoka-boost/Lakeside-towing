@@ -115,7 +115,7 @@ const faqSchema = {
         <h2>Towing, recovery &amp; roadside</h2>
         <hr class="rule" />
         <p class="lede">
-          Eight services, one number. Whatever has gone wrong, it is very
+          Every service under one number. Whatever has gone wrong, it is very
           probably something we handle every week.
         </p>
       </div>
@@ -145,7 +145,7 @@ const faqSchema = {
         </div>
         <div class="rates-table-wrap">
           <RateTable
-            only={['in-town', 'long-distance', 'winch-out', 'boost', 'lockout', 'fuel']}
+            only={['in-town', 'out-of-town', 'winch-out', 'boost', 'lockout', 'fuel']}
             showDisclaimer={false}
           />
         </div>
@@ -162,7 +162,8 @@ const faqSchema = {
         <hr class="rule" />
         <p class="lede">
           Our yard is on Norweld Dr in Orillia, so we are not dispatching from
-          another city and hoping the traffic cooperates.
+          another city and hoping the traffic cooperates. Orillia is in town;
+          everywhere else we go is priced as an out-of-town run.
         </p>
       </div>
 
@@ -193,8 +194,9 @@ const faqSchema = {
           }
         </ul>
         <p class="area-note">
-          Not on the list? <a href={business.phoneHref}>Call us</a> — we may
-          still be able to help.
+          Not on the list? <a href={business.phoneHref}>Call us</a> — we work
+          this area rather than the whole province, but we will tell you
+          straight away whether your job is one of ours.
         </p>
       </div>
     </div>

@@ -128,8 +128,6 @@ before a truck is dispatched. Change them in one place:
 /                              Home
 /services/                     Services hub
   /services/emergency-towing/
-  /services/long-distance-towing/
-  /services/enclosed-transport/
   /services/winch-out-recovery/
   /services/battery-boost/
   /services/lockout-service/
