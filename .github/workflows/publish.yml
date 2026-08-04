@@ -1,0 +1,86 @@
+name: Publish preview to gh-pages
+
+# Builds the site and pushes the finished HTML to the `gh-pages` branch, which
+# GitHub Pages then serves in "Deploy from a branch" mode.
+#
+# Why a branch rather than the actions/deploy-pages route: that route needs
+# `id-token: write` for OIDC, which this repo's token was not granted, and it
+# needs the Pages site to already exist with build_type=workflow. Pushing a
+# branch needs only `contents: write`, and pointing Pages at a branch creates
+# the site on its own.
+#
+# One-time setup:
+#   Settings -> Pages -> Build and deployment
+#     Source: Deploy from a branch
+#     Branch: gh-pages   /(root)
+#
+# Preview builds carry `noindex` and a disallow-all robots.txt. A staging copy
+# that gets indexed competes in search with the domain it is staging for.
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - '**.md'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# Never let two deploys race to force-push the same branch.
+concurrency:
+  group: gh-pages
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      # Derived from the repo path rather than hard-coded, so a rename needs no
+      # edit here. GITHUB_REPOSITORY is "owner/repo" on every event type,
+      # unlike the github.event.repository context.
+      - name: Resolve target URL
+        run: |
+          echo "SITE_URL=https://${GITHUB_REPOSITORY_OWNER}.github.io" >> "$GITHUB_ENV"
+          echo "BASE_PATH=/${GITHUB_REPOSITORY#*/}" >> "$GITHUB_ENV"
+
+      - name: Build
+        env:
+          PUBLIC_PREVIEW: 'true'
+        run: npm run build
+
+      - name: Verify the build
+        run: node scripts/verify-build.mjs
+
+      # Pages runs Jekyll over branch deployments, and Jekyll ignores any
+      # directory starting with an underscore. Without this file Astro's
+      # _astro/ folder is dropped and every stylesheet 404s.
+      - name: Disable Jekyll processing
+        run: touch dist/.nojekyll
+
+      - name: Push to gh-pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cd dist
+          git init -q
+          git config user.name  'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git checkout -qb gh-pages
+          git add -A
+          git commit -qm "Build of ${GITHUB_SHA} from ${GITHUB_REF_NAME}"
+          # Generated output — history is worthless, so replace it wholesale
+          # rather than accumulating a commit per deploy.
+          git push -f \
+            "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" \
+            gh-pages
+          echo "Published to https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}/"

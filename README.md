@@ -36,14 +36,32 @@ every deploy.
 
 ### GitHub Pages preview
 
-`.github/workflows/deploy-pages.yml` publishes a preview on every push to the
-default branch:
+`.github/workflows/publish.yml` builds on every push to `main` and force-pushes
+the finished HTML to the **`gh-pages`** branch, which Pages serves:
 
 > **https://muskoka-boost.github.io/Lakeside-towing/**
 
-**This needs to be switched on once**, by a repo admin:
-*Settings → Pages → Build and deployment → Source: **GitHub Actions***.
-Until that is set, the workflow's deploy step will fail.
+**One-time setup** — *Settings → Pages → Build and deployment*:
+
+| | |
+|---|---|
+| Source | Deploy from a branch |
+| Branch | `gh-pages` — `/(root)` |
+
+`gh-pages` holds build output only; never edit or commit to it by hand, as each
+deploy replaces it entirely.
+
+Two details this route depends on:
+
+- **`.nojekyll`** is written into the published output. Branch deployments are
+  run through Jekyll, which ignores directories beginning with an underscore —
+  without that file Astro's `_astro/` folder is dropped and every stylesheet
+  404s.
+- It needs only `contents: write`. The `actions/deploy-pages` route was tried
+  first and its deploy job was rejected outright: it requires `id-token: write`
+  for OIDC, which this repository's token was not granted, and it requires the
+  Pages site to already exist with `build_type=workflow`. Pushing a branch
+  avoids both.
 
 Preview builds are deliberately **not indexable** — `noindex, nofollow` on every
 page and a `Disallow: /` robots.txt. A staging copy that gets indexed competes
