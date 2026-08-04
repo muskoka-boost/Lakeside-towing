@@ -183,20 +183,27 @@ All in `public/media/`, referenced with relative paths — nothing is hotlinked.
 
 | File | What it is |
 |---|---|
-| `hero-tow-truck.{webp,jpg}` + `-1280`, `-800` | Homepage hero, responsive sizes |
+| `hero-wrecker-daylight.{webp,jpg}` + `-1280`, `-800` | Homepage hero, responsive sizes |
 | `logo.{webp,jpg}` | Header and footer logo |
 | `mto-vehicle-storage-certificate.{webp,jpg}` | Certificate shown on `/about/` |
 | `og-lakeside-towing.jpg` | 1200×630 social share image |
 | `recovery-snowmobile-winter.*` | Snowmobile recovery at Bay & Jarvis, Orillia |
 | `tow-truck-night-hookup.*` | White wrecker hooked up after dark |
+| `tow-truck-daylight-hookup.*` | Wheel-lift and boom in daylight, CVOR number visible |
+| `tow-truck-uhaul-plaza-night.*` | Rental van lifted in a plaza lot at night |
 
-To swap the hero, replace the three `hero-tow-truck-*.webp` files (1920, 1280
-and 800 px wide) plus the `.jpg` fallback, keeping the filenames.
+To swap the hero, rebuild the four `hero-wrecker-daylight` files at 16:9 and
+1920 px (see below) and keep the filenames, or point `src/pages/index.astro` at
+a new basename.
 
-> **The hero is not a Lakeside truck.** `hero-tow-truck.jpg` is a stock/generated
-> image of a 1950s wrecker with no company branding on it. It should be replaced
-> with a real photograph as soon as one of the right shape is available. The
-> photographs listed below *are* the business's own.
+**Every image on this site is the business's own.** The earlier build used a
+generated image of a 1950s wrecker for both the hero and the social share card;
+both were replaced with real photographs in August 2026.
+
+> **Licence plates.** Blur any legible plate on a customer's vehicle before
+> publishing. `hero-wrecker-daylight` was blurred this way. Third-party company
+> livery on a towed vehicle is the operator's judgement call, not a technical
+> one — check before featuring a named local business on the homepage.
 
 #### Adding a photograph
 
@@ -204,9 +211,22 @@ Photos arrive from a phone at whatever size the camera produced. Rather than
 hand-tuning each one, run:
 
 ```bash
-node scripts/prepare-photo.mjs <source.jpg> <output-name> [aspect]
-# e.g. node scripts/prepare-photo.mjs ~/flatbed.jpg flatbed-loading-orillia 3:2
+node scripts/prepare-photo.mjs <source.jpg> <output-name> [aspect] [maxWidth]
+# in-page photo:  node scripts/prepare-photo.mjs ~/flatbed.jpg flatbed-loading 3:2
+# homepage hero:  node scripts/prepare-photo.mjs ~/truck.jpg hero-wrecker-daylight 16:9 1920
 ```
+
+**iPhone HEIC will not decode** — the `sharp` build here supports AVIF only, not
+the HEVC variant iPhones produce. Convert first:
+
+```bash
+npm i heic-decode
+node -e "…decode(heic) → sharp(raw) → .jpeg()"   # see git history for the script
+```
+
+Then feed the resulting JPEG to `prepare-photo.mjs`. Easiest alternative is to
+set the phone to shoot JPEG: iPhone → Settings → Camera → Formats → Most
+Compatible.
 
 That writes the four files the site serves — `.jpg` fallback, `.webp`, and
 `-1280.webp` / `-800.webp` — with a centred crop, and prints the registry entry
@@ -223,13 +243,18 @@ Where they are used today:
 
 | Page | Photo |
 |---|---|
+| `/` (hero + social card) | `hero-wrecker-daylight` |
+| `/about/` | `tow-truck-daylight-hookup` |
+| `/services/` | `tow-truck-uhaul-plaza-night` |
 | `/services/emergency-towing/` | `tow-truck-night-hookup` |
 | `/services/winch-out-recovery/` | `recovery-snowmobile-winter` |
 | `/service-areas/orillia/` | `recovery-snowmobile-winter` |
 
-The remaining service and area pages have no photograph yet and are the obvious
-homes for the next batch — a flatbed loading, a boost or lockout in progress,
-the storage yard, and the trucks in Rama, Washago, Gravenhurst or Barrie.
+Still without a photograph, and the obvious homes for the next batch: battery
+boost, lockout, fuel delivery and vehicle storage (the yard), plus the Rama,
+Washago, Gravenhurst and Barrie area pages. Those four town pages want photos
+taken *in* those towns — a generic truck shot with a caption implying a location
+it was not taken in is the one thing to avoid here.
 
 ---
 

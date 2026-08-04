@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import PageHero from '../components/PageHero.astro';
 import Icon from '../components/Icon.astro';
 import CtaBand from '../components/CtaBand.astro';
+import Photo from '../components/Photo.astro';
 import { business, addressLine, credentials, allCommunities } from '../data/site';
 import { url, orgId } from '../lib/paths';
 
@@ -63,6 +64,8 @@ const aboutSchema = {
           Rama Road stop being plowed in December. That knowledge is the
           difference between finding you quickly and driving past your turn twice.
         </p>
+
+        <Photo id="tow-truck-daylight-hookup" sizes="(max-width: 900px) 100vw, 620px" />
 
         <h2>What we actually do</h2>
         <p>

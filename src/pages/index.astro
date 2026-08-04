@@ -12,6 +12,7 @@ import {
   areas,
   allCommunities,
   generalFaqs,
+  photoById,
 } from '../data/site';
 import { url } from '../lib/paths';
 
@@ -35,18 +36,18 @@ const faqSchema = {
     <picture class="hero-img">
       <source
         media="(max-width: 640px)"
-        srcset={url('/media/hero-tow-truck-800.webp')}
+        srcset={url('/media/hero-wrecker-daylight-800.webp')}
         type="image/webp"
       />
       <source
         media="(max-width: 1280px)"
-        srcset={url('/media/hero-tow-truck-1280.webp')}
+        srcset={url('/media/hero-wrecker-daylight-1280.webp')}
         type="image/webp"
       />
-      <source srcset={url('/media/hero-tow-truck.webp')} type="image/webp" />
+      <source srcset={url('/media/hero-wrecker-daylight.webp')} type="image/webp" />
       <img
-        src={url('/media/hero-tow-truck.jpg')}
-        alt="Navy and red Lakeside Towing tow truck parked on a highway shoulder at sunset"
+        src={url('/media/hero-wrecker-daylight.jpg')}
+        alt={photoById('hero-wrecker-daylight')!.alt}
         width="1920"
         height="1080"
         fetchpriority="high"
@@ -344,6 +345,16 @@ const faqSchema = {
     height: 100%;
     object-fit: cover;
     object-position: 62% center;
+  }
+
+  /* A narrow viewport sees a tall slice of a 16:9 photo. At the desktop focal
+     point that slice lands on the customer's vehicle rather than ours, so pull
+     it left onto the Lakeside truck and its lettering. */
+  @media (max-width: 700px) {
+    .hero-img,
+    .hero-img img {
+      object-position: 36% center;
+    }
   }
 
   .hero::after {

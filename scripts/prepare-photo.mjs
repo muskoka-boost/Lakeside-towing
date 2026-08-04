@@ -9,13 +9,20 @@
  * is actually on disk.
  *
  * Usage:
- *   node scripts/prepare-photo.mjs <source> <name> [aspect]
+ *   node scripts/prepare-photo.mjs <source> <name> [aspect] [maxWidth]
  *
  *   source   Path to the original (any format sharp reads).
  *   name     Output basename, e.g. "recovery-snowmobile-winter". Use words a
  *            human and a search engine can both read.
  *   aspect   Target ratio as w:h. Defaults to 3:2, which suits a photo band
  *            inside a page. Use 16:9 for anything running full-bleed.
+ *   maxWidth Widest output in px. Defaults to 1600, which is ample for a photo
+ *            sitting inside the page. The homepage hero spans the viewport, so
+ *            it is built at 1920.
+ *
+ * iPhone HEIC will not decode here — sharp's libvips is built for AVIF only.
+ * Convert first (heic-decode + libheif-js handles the HEVC variant) and pass
+ * the resulting JPEG.
  *
  * Writes public/media/<name>.jpg, <name>.webp, <name>-1280.webp and
  * <name>-800.webp, then prints the data/site.ts entry to paste in.
@@ -29,10 +36,10 @@ import sharp from 'sharp';
 import { mkdir } from 'node:fs/promises';
 import { basename } from 'node:path';
 
-const [source, name, aspect = '3:2'] = process.argv.slice(2);
+const [source, name, aspect = '3:2', maxWidth = '1600'] = process.argv.slice(2);
 
 if (!source || !name) {
-  console.error('Usage: node scripts/prepare-photo.mjs <source> <name> [aspect]');
+  console.error('Usage: node scripts/prepare-photo.mjs <source> <name> [aspect] [maxWidth]');
   process.exit(1);
 }
 
@@ -44,8 +51,13 @@ if (!aw || !ah) {
 
 const OUT_DIR = 'public/media';
 /** The widest we serve. Beyond this the file cost stops buying visible detail. */
-const FULL_WIDTH = 1600;
+const FULL_WIDTH = Number(maxWidth);
 const WIDTHS = [1280, 800];
+
+if (!Number.isFinite(FULL_WIDTH) || FULL_WIDTH < 800) {
+  console.error(`Bad maxWidth "${maxWidth}" — expected a number of at least 800.`);
+  process.exit(1);
+}
 
 await mkdir(OUT_DIR, { recursive: true });
 

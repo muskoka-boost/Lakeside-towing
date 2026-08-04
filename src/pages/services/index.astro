@@ -5,6 +5,7 @@ import ServiceGrid from '../../components/ServiceGrid.astro';
 import RateTable from '../../components/RateTable.astro';
 import CtaBand from '../../components/CtaBand.astro';
 import Icon from '../../components/Icon.astro';
+import Photo from '../../components/Photo.astro';
 import { services, business, serviceAreaPolicy } from '../../data/site';
 import { url, abs } from '../../lib/paths';
 
@@ -85,7 +86,11 @@ const listSchema = {
         </div>
 
         <div>
-          <h3 class="rates-h">Typical rates at a glance</h3>
+          <Photo
+            id="tow-truck-uhaul-plaza-night"
+            sizes="(max-width: 950px) 100vw, 640px"
+          />
+          <h3 class="rates-h" style="margin-top:2rem">Typical rates at a glance</h3>
           <RateTable showDisclaimer={false} />
           <p style="margin-top:1rem">
             <a href={url('/rates/')}>Full rate list and what affects the price →</a>

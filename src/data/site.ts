@@ -86,6 +86,28 @@ export const photos: Record<string, Photo> = {
     caption:
       'Hooked up after dark. The number is answered at 3 a.m. the same as it is at 3 p.m., and a truck goes out.',
   },
+  'hero-wrecker-daylight': {
+    file: 'hero-wrecker-daylight',
+    width: 1920,
+    height: 1080,
+    alt: 'A white Lakeside Towing & Recovery wrecker in summer sunshine with a pickup truck lifted on its wheel-lift, the company name and CVOR number lettered on the truck body.',
+  },
+  'tow-truck-daylight-hookup': {
+    file: 'tow-truck-daylight-hookup',
+    width: 1600,
+    height: 1067,
+    alt: 'Close view of the Lakeside wrecker\'s boom and wheel-lift under a blue sky, holding the front wheels of a white cargo van clear of the road, with the CVOR number 212-186-623 lettered on the truck.',
+    caption:
+      'The wheel-lift taking a van\'s front wheels off the road. Our CVOR number is on the truck, as it has to be — TO/CVOR-212-186-623.',
+  },
+  'tow-truck-uhaul-plaza-night': {
+    file: 'tow-truck-uhaul-plaza-night',
+    width: 1600,
+    height: 1067,
+    alt: 'A Lakeside Towing wrecker lifting the front wheels of a rental cargo van in an empty, lit plaza parking lot late at night.',
+    caption:
+      'A rental van lifted out of a plaza lot after closing. Vans, work trucks and cube vans are routine — not just cars.',
+  },
 };
 
 export const photoById = (id: string): Photo | undefined => photos[id];
