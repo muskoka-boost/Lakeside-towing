@@ -7,6 +7,7 @@ import FaqList from '../../components/FaqList.astro';
 import ServiceGrid from '../../components/ServiceGrid.astro';
 import CtaBand from '../../components/CtaBand.astro';
 import { services, areas, business, rateByKey } from '../../data/site';
+import { url, abs, orgId } from '../../lib/paths';
 
 export function getStaticPaths() {
   return services.map((service) => ({ params: { slug: service.slug }, props: { service } }));
@@ -28,12 +29,12 @@ const facts = [
 const schema = [
   {
     '@type': 'Service',
-    '@id': `${new URL(`/services/${service.slug}/`, Astro.site).href}#service`,
+    '@id': `${abs(Astro.site!, `/services/${service.slug}/`)}#service`,
     name: service.name,
     alternateName: service.h1,
     description: service.description,
     serviceType: service.name,
-    provider: { '@id': `${Astro.site!.origin}/#business` },
+    provider: { '@id': orgId(Astro.site!) },
     areaServed: areas.map((a) => ({ '@type': 'City', name: a.name })),
     availableChannel: {
       '@type': 'ServiceChannel',
@@ -144,7 +145,7 @@ const schema = [
           }
           <p class="aside-fine">
             Typical, not fixed — conditions and distance change it. You get a firm
-            number on the phone. <a href="/rates/">All rates →</a>
+            number on the phone. <a href={url('/rates/')}>All rates →</a>
           </p>
         </div>
 
@@ -154,7 +155,7 @@ const schema = [
             {
               areas.map((a) => (
                 <li>
-                  <a href={`/service-areas/${a.slug}/`}>
+                  <a href={url(`/service-areas/${a.slug}/`)}>
                     <Icon name="map-pin" size={15} />
                     {a.name}
                   </a>
@@ -163,7 +164,7 @@ const schema = [
             }
           </ul>
           <p class="aside-fine">
-            <a href="/service-areas/">Every community we serve →</a>
+            <a href={url('/service-areas/')}>Every community we serve →</a>
           </p>
         </div>
       </aside>

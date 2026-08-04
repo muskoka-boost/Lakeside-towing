@@ -13,6 +13,7 @@ import {
   allCommunities,
   generalFaqs,
 } from '../data/site';
+import { url } from '../lib/paths';
 
 const title = '24/7 Towing in Orillia ON | Lakeside Towing & Recovery';
 const description =
@@ -34,17 +35,17 @@ const faqSchema = {
     <picture class="hero-img">
       <source
         media="(max-width: 640px)"
-        srcset="/media/hero-tow-truck-800.webp"
+        srcset={url('/media/hero-tow-truck-800.webp')}
         type="image/webp"
       />
       <source
         media="(max-width: 1280px)"
-        srcset="/media/hero-tow-truck-1280.webp"
+        srcset={url('/media/hero-tow-truck-1280.webp')}
         type="image/webp"
       />
-      <source srcset="/media/hero-tow-truck.webp" type="image/webp" />
+      <source srcset={url('/media/hero-tow-truck.webp')} type="image/webp" />
       <img
-        src="/media/hero-tow-truck.jpg"
+        src={url('/media/hero-tow-truck.jpg')}
         alt="Navy and red Lakeside Towing tow truck parked on a highway shoulder at sunset"
         width="1920"
         height="1080"
@@ -78,7 +79,7 @@ const faqSchema = {
           <Icon name="phone" size={24} />
           {business.phoneDisplay}
         </a>
-        <a href="/services/" class="btn btn-ghost-light">What we do</a>
+        <a href={url('/services/')} class="btn btn-ghost-light">What we do</a>
       </div>
 
       <p class="hero-foot">
@@ -137,7 +138,7 @@ const faqSchema = {
             are the numbers we actually quote — and you will hear a firm price on
             the phone before a truck is dispatched.
           </p>
-          <a href="/rates/" class="btn btn-navy" style="margin-top:.5rem">
+          <a href={url('/rates/')} class="btn btn-navy" style="margin-top:.5rem">
             Full rate list
             <Icon name="arrow-right" size={19} />
           </a>
@@ -169,7 +170,7 @@ const faqSchema = {
         {
           areas.map((a) => (
             <li>
-              <a href={`/service-areas/${a.slug}/`}>
+              <a href={url(`/service-areas/${a.slug}/`)}>
                 <Icon name="map-pin" size={20} />
                 <div>
                   <strong>{a.name}</strong>
@@ -298,7 +299,7 @@ const faqSchema = {
           </li>
         </ul>
 
-        <a href="/contact/" class="btn btn-navy">
+        <a href={url('/contact/')} class="btn btn-navy">
           Contact page
           <Icon name="arrow-right" size={19} />
         </a>

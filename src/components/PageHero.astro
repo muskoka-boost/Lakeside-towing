@@ -2,6 +2,7 @@
 import Breadcrumbs from './Breadcrumbs.astro';
 import Icon from './Icon.astro';
 import { business } from '../data/site';
+import { url } from '../lib/paths';
 
 interface Props {
   eyebrow?: string;
@@ -50,7 +51,7 @@ const {
         <Icon name="phone" size={20} />
         {business.phoneDisplay}
       </a>
-      <a href={secondary.href} class="btn btn-ghost-light">{secondary.label}</a>
+      <a href={url(secondary.href)} class="btn btn-ghost-light">{secondary.label}</a>
     </div>
   </div>
 </section>

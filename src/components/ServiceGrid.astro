@@ -1,6 +1,7 @@
 ---
 import Icon from './Icon.astro';
 import { services } from '../data/site';
+import { url } from '../lib/paths';
 
 interface Props {
   /** Restrict to these slugs, in order. Defaults to all services. */
@@ -21,7 +22,7 @@ if (exclude) list = list.filter((s) => s.slug !== exclude);
   {
     list.map((s) => (
       <li class="service-card">
-        <a href={`/services/${s.slug}/`}>
+        <a href={url(`/services/${s.slug}/`)}>
           <span class="service-icon">
             <Icon name={s.icon as any} size={26} />
           </span>

@@ -4,6 +4,7 @@ import PageHero from '../components/PageHero.astro';
 import Icon from '../components/Icon.astro';
 import CtaBand from '../components/CtaBand.astro';
 import { business, addressLine, credentials, allCommunities } from '../data/site';
+import { url, orgId } from '../lib/paths';
 
 const title = 'About Us | OPP Approved Towing in Orillia | Lakeside';
 const description =
@@ -15,7 +16,7 @@ const aboutSchema = {
   '@type': 'AboutPage',
   name: title,
   description,
-  mainEntity: { '@id': `${Astro.site!.origin}/#business` },
+  mainEntity: { '@id': orgId(Astro.site!) },
 };
 ---
 
@@ -156,13 +157,13 @@ const aboutSchema = {
           unlicensed lot keeping an eye on things has none of it.
         </p>
         <p>
-          <a href="/services/vehicle-storage/">More about our storage service →</a>
+          <a href={url('/services/vehicle-storage/')}>More about our storage service →</a>
         </p>
       </div>
 
       <figure class="cert-figure">
         <img
-          src="/media/mto-vehicle-storage-certificate.webp"
+          src={url('/media/mto-vehicle-storage-certificate.webp')}
           alt={`Ontario Ministry of Transportation Vehicle Storage Certificate ${business.storageCertificate} issued to Lakeside Towing & Recovery`}
           width="1100"
           height="1414"

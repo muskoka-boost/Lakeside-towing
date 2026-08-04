@@ -2,12 +2,23 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
-// Canonical production origin. Drives <link rel=canonical>, Open Graph URLs,
-// JSON-LD @id values and sitemap.xml — change it here and everything follows.
-export const SITE = 'https://www.lakesidetowingorillia.com';
+/**
+ * Two deployment targets share this config:
+ *
+ *   Production   — the real domain, served from the root.
+ *   Pages preview — https://muskoka-boost.github.io/Lakeside-towing/, served
+ *                   from a subdirectory, with indexing switched off.
+ *
+ * The workflow in .github/workflows/deploy-pages.yml sets SITE_URL, BASE_PATH
+ * and PUBLIC_PREVIEW. With none of them set, `npm run build` produces the
+ * production site — so the default behaviour is always the real one.
+ */
+export const SITE = process.env.SITE_URL || 'https://www.lakesidetowingorillia.com';
+const BASE = process.env.BASE_PATH || '/';
 
 export default defineConfig({
   site: SITE,
+  base: BASE,
   trailingSlash: 'always',
   build: { format: 'directory', inlineStylesheets: 'auto' },
   integrations: [
@@ -17,12 +28,12 @@ export default defineConfig({
       changefreq: 'monthly',
       lastmod: new Date(),
       serialize(item) {
-        // Homepage and the two money pages get the highest priority; deep
-        // service/area pages sit a notch below.
-        if (item.url === `${SITE}/`) return { ...item, priority: 1.0, changefreq: 'weekly' };
-        if (/\/(rates|contact)\/$/.test(item.url)) return { ...item, priority: 0.9 };
-        if (/\/services\/[^/]+\/$/.test(item.url)) return { ...item, priority: 0.8 };
-        if (/\/service-areas\/[^/]+\/$/.test(item.url)) return { ...item, priority: 0.7 };
+        // Match on the path so these rules hold whatever base is in use.
+        const path = new URL(item.url).pathname.replace(BASE.replace(/\/+$/, ''), '') || '/';
+        if (path === '/') return { ...item, priority: 1.0, changefreq: 'weekly' };
+        if (/^\/(rates|contact)\/$/.test(path)) return { ...item, priority: 0.9 };
+        if (/^\/services\/[^/]+\/$/.test(path)) return { ...item, priority: 0.8 };
+        if (/^\/service-areas\/[^/]+\/$/.test(path)) return { ...item, priority: 0.7 };
         return { ...item, priority: 0.6 };
       },
     }),

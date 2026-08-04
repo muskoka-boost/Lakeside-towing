@@ -6,6 +6,7 @@ import RateTable from '../components/RateTable.astro';
 import FaqList from '../components/FaqList.astro';
 import CtaBand from '../components/CtaBand.astro';
 import { business, rates, rateGroups, ratesDisclaimer } from '../data/site';
+import { orgId } from '../lib/paths';
 
 const title = 'Towing Rates in Orillia | Lakeside Towing & Recovery';
 const description =
@@ -56,7 +57,7 @@ const faqSchema = {
 const priceSchema = {
   '@type': 'OfferCatalog',
   name: 'Typical towing and roadside rates',
-  provider: { '@id': `${Astro.site!.origin}/#business` },
+  provider: { '@id': orgId(Astro.site!) },
   itemListElement: rates.map((r) => ({
     '@type': 'Offer',
     name: r.label,

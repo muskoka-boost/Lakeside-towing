@@ -7,6 +7,7 @@ import RateTable from '../../components/RateTable.astro';
 import FaqList from '../../components/FaqList.astro';
 import CtaBand from '../../components/CtaBand.astro';
 import { areas, services, business, addressLine } from '../../data/site';
+import { url, abs, orgId } from '../../lib/paths';
 
 export function getStaticPaths() {
   return areas.map((area) => ({ params: { slug: area.slug }, props: { area } }));
@@ -23,11 +24,11 @@ const otherAreas = areas.filter((a) => a.slug !== area.slug);
 const schema = [
   {
     '@type': 'Service',
-    '@id': `${new URL(`/service-areas/${area.slug}/`, Astro.site).href}#service`,
+    '@id': `${abs(Astro.site!, `/service-areas/${area.slug}/`)}#service`,
     name: `Towing in ${area.name}`,
     description: area.description,
     serviceType: 'Towing service',
-    provider: { '@id': `${Astro.site!.origin}/#business` },
+    provider: { '@id': orgId(Astro.site!) },
     areaServed: {
       '@type': 'City',
       name: area.name,
@@ -41,7 +42,7 @@ const schema = [
         itemOffered: {
           '@type': 'Service',
           name: `${s.name} in ${area.name}`,
-          url: new URL(`/services/${s.slug}/`, Astro.site).href,
+          url: abs(Astro.site!, `/services/${s.slug}/`),
         },
       })),
     },
@@ -117,7 +118,7 @@ const schema = [
             {
               otherAreas.map((a) => (
                 <li>
-                  <a href={`/service-areas/${a.slug}/`}>
+                  <a href={url(`/service-areas/${a.slug}/`)}>
                     {a.name}
                     <Icon name="chevron-right" size={14} />
                   </a>
@@ -126,7 +127,7 @@ const schema = [
             }
           </ul>
           <p class="aside-fine">
-            <a href="/service-areas/">All communities we cover →</a>
+            <a href={url('/service-areas/')}>All communities we cover →</a>
           </p>
         </div>
       </aside>

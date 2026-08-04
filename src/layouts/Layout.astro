@@ -4,6 +4,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import CallBar from '../components/CallBar.astro';
 import { business, addressLine, allCommunities, services } from '../data/site';
+import { url, abs, orgId as makeOrgId, isPreview } from '../lib/paths';
 
 export interface Props {
   title: string;
@@ -29,8 +30,8 @@ const {
 
 const site = Astro.site!;
 const canonical = new URL(Astro.url.pathname, site).href;
-const ogImageUrl = new URL(ogImage, site).href;
-const orgId = `${site.origin}/#business`;
+const ogImageUrl = abs(site, ogImage);
+const orgId = makeOrgId(site);
 
 /**
  * The LocalBusiness node. Every page carries it — Google reads the whole
@@ -44,11 +45,11 @@ const localBusiness = {
   slogan: business.tagline,
   description:
     'Full-service 24/7 towing and recovery serving Orillia and the surrounding area — emergency towing, long distance transport, enclosed transport, winch-out recovery, battery boosts, lockouts, fuel delivery and MTO-licensed vehicle storage.',
-  url: `${site.origin}/`,
+  url: abs(site, '/'),
   telephone: business.phoneE164,
   email: business.email,
-  image: new URL('/media/logo.jpg', site).href,
-  logo: new URL('/media/logo.jpg', site).href,
+  image: abs(site, '/media/logo.jpg'),
+  logo: abs(site, '/media/logo.jpg'),
   priceRange: '$$',
   currenciesAccepted: 'CAD',
   address: {
@@ -92,7 +93,7 @@ const localBusiness = {
         '@type': 'Service',
         name: s.name,
         description: s.summary,
-        url: `${site.origin}/services/${s.slug}/`,
+        url: abs(site, `/services/${s.slug}/`),
       },
     })),
   },
@@ -106,7 +107,7 @@ const breadcrumbNode =
           '@type': 'ListItem',
           position: i + 1,
           name: c.name,
-          item: new URL(c.href, site).href,
+          item: abs(site, c.href),
         })),
       }
     : null;
@@ -115,8 +116,8 @@ const graph = [
   localBusiness,
   {
     '@type': 'WebSite',
-    '@id': `${site.origin}/#website`,
-    url: `${site.origin}/`,
+    '@id': `${abs(site, '/')}#website`,
+    url: abs(site, '/'),
     name: business.name,
     publisher: { '@id': orgId },
     inLanguage: 'en-CA',
@@ -127,7 +128,7 @@ const graph = [
     url: canonical,
     name: title,
     description,
-    isPartOf: { '@id': `${site.origin}/#website` },
+    isPartOf: { '@id': `${abs(site, '/')}#website` },
     about: { '@id': orgId },
     inLanguage: 'en-CA',
   },
@@ -147,7 +148,7 @@ const jsonLd = { '@context': 'https://schema.org', '@graph': graph };
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    {noindex && <meta name="robots" content="noindex, follow" />}
+    {(noindex || isPreview) && <meta name="robots" content="noindex, nofollow" />}
 
     <!-- Local relevance signals -->
     <meta name="geo.region" content="CA-ON" />
@@ -175,8 +176,8 @@ const jsonLd = { '@context': 'https://schema.org', '@graph': graph };
     <meta name="twitter:image" content={ogImageUrl} />
 
     <!-- Icons -->
-    <link rel="icon" href="/favicon.ico" sizes="any" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="icon" href={url('/favicon.ico')} sizes="any" />
+    <link rel="apple-touch-icon" href={url('/apple-touch-icon.png')} />
     <meta name="theme-color" content="#0d3b91" />
 
     <!-- Fonts: preconnect then load without blocking render -->

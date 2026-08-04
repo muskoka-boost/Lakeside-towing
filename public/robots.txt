@@ -1,7 +1,0 @@
-# Lakeside Towing & Recovery — https://www.lakesidetowingorillia.com
-# Everything on this site is public marketing content. Crawl it all.
-
-User-agent: *
-Allow: /
-
-Sitemap: https://www.lakesidetowingorillia.com/sitemap-index.xml

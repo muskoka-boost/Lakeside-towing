@@ -1,5 +1,6 @@
 ---
 import Icon from './Icon.astro';
+import { url } from '../lib/paths';
 
 interface Props {
   /** Excludes Home, which is prepended. Last item renders as current page. */
@@ -20,7 +21,7 @@ const items = [{ name: 'Home', href: '/' }, ...trail];
             <span aria-current="page">{item.name}</span>
           ) : (
             <>
-              <a href={item.href}>{item.name}</a>
+              <a href={url(item.href)}>{item.name}</a>
               <Icon name="chevron-right" size={13} />
             </>
           )}

@@ -20,6 +20,59 @@ npm run preview  # serve the built site
 `dist/` is a plain folder of HTML, CSS and images. It deploys to Vercel,
 Netlify, Cloudflare Pages, or any static host with no configuration.
 
+```bash
+npm run verify   # post-build checks over dist/ — run after a build
+```
+
+`verify` re-reads the built output and fails on broken internal links, missing
+base-path prefixes, duplicate or over-long titles and descriptions, images
+without `alt` or dimensions, invalid JSON-LD, `target="_blank"` without
+`rel="noopener"`, and any page missing the footer credit. CI runs it before
+every deploy.
+
+---
+
+## Deploying
+
+### GitHub Pages preview
+
+`.github/workflows/deploy-pages.yml` publishes a preview on every push to the
+default branch:
+
+> **https://muskoka-boost.github.io/Lakeside-towing/**
+
+**This needs to be switched on once**, by a repo admin:
+*Settings → Pages → Build and deployment → Source: **GitHub Actions***.
+Until that is set, the workflow's deploy step will fail.
+
+Preview builds are deliberately **not indexable** — `noindex, nofollow` on every
+page and a `Disallow: /` robots.txt. A staging copy that gets indexed competes
+in search with the domain it is staging for, and can outrank it.
+
+### Production
+
+A default `npm run build` produces the production site: root paths, canonical
+URLs on `lakesidetowingorillia.com`, indexable. Point any static host at `dist/`.
+
+Three environment variables switch between targets, and the workflow sets all
+three from the Pages configuration rather than hard-coding them:
+
+| Variable | Default (production) | Pages preview |
+|---|---|---|
+| `SITE_URL` | `https://www.lakesidetowingorillia.com` | `https://muskoka-boost.github.io` |
+| `BASE_PATH` | `/` | `/Lakeside-towing` |
+| `PUBLIC_PREVIEW` | unset | `true` |
+
+Because Pages serves project sites from a subdirectory, **every internal path
+goes through the helpers in `src/lib/paths.ts`** — `url()` for `href`/`src`,
+`abs()` for absolute URLs in schema and Open Graph. Write paths in source as if
+the site were at the root (`/services/`); the helper applies the base. A
+hard-coded `href="/services/"` will work in production and 404 on Pages, which
+is exactly what `npm run verify` catches.
+
+When the site goes live on the real domain, nothing needs rewriting — build
+without the environment variables.
+
 ---
 
 ## What changed from the old site

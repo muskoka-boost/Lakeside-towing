@@ -1,6 +1,7 @@
 ---
 import Icon from './Icon.astro';
 import { business, addressLine, services, areas } from '../data/site';
+import { url } from '../lib/paths';
 
 const year = new Date().getFullYear();
 ---
@@ -8,7 +9,7 @@ const year = new Date().getFullYear();
 <footer class="site-footer">
   <div class="wrap footer-grid">
     <div class="footer-brand">
-      <img src="/media/logo.webp" alt={`${business.name} logo`} width="180" height="120" loading="lazy" />
+      <img src={url('/media/logo.webp')} alt={`${business.name} logo`} width="180" height="120" loading="lazy" />
       <p class="footer-tagline">&ldquo;{business.tagline}&rdquo;</p>
       <p class="footer-blurb">
         Local, full-service towing and recovery for Orillia and the surrounding
@@ -30,21 +31,21 @@ const year = new Date().getFullYear();
     <div class="footer-col">
       <h2>Services</h2>
       <ul>
-        {services.map((s) => <li><a href={`/services/${s.slug}/`}>{s.name}</a></li>)}
+        {services.map((s) => <li><a href={url(`/services/${s.slug}/`)}>{s.name}</a></li>)}
       </ul>
     </div>
 
     <div class="footer-col">
       <h2>Service Areas</h2>
       <ul>
-        {areas.map((a) => <li><a href={`/service-areas/${a.slug}/`}>{a.name}</a></li>)}
-        <li><a href="/service-areas/">All areas we cover</a></li>
+        {areas.map((a) => <li><a href={url(`/service-areas/${a.slug}/`)}>{a.name}</a></li>)}
+        <li><a href={url('/service-areas/')}>All areas we cover</a></li>
       </ul>
       <h2 class="mt">More</h2>
       <ul>
-        <li><a href="/rates/">Rates</a></li>
-        <li><a href="/about/">About us</a></li>
-        <li><a href="/contact/">Contact</a></li>
+        <li><a href={url('/rates/')}>Rates</a></li>
+        <li><a href={url('/about/')}>About us</a></li>
+        <li><a href={url('/contact/')}>Contact</a></li>
       </ul>
     </div>
 

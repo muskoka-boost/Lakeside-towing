@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import Icon from '../components/Icon.astro';
 import ServiceGrid from '../components/ServiceGrid.astro';
 import { business } from '../data/site';
+import { url } from '../lib/paths';
 ---
 
 <Layout
@@ -24,7 +25,7 @@ import { business } from '../data/site';
           <Icon name="phone" size={21} />
           {business.phoneDisplay}
         </a>
-        <a href="/" class="btn btn-ghost-light">Back to home</a>
+        <a href={url('/')} class="btn btn-ghost-light">Back to home</a>
       </div>
     </div>
   </section>
@@ -40,10 +41,10 @@ import { business } from '../data/site';
         <ServiceGrid />
       </div>
       <p class="more-links">
-        <a href="/rates/">Rates</a>
-        <a href="/service-areas/">Service areas</a>
-        <a href="/about/">About us</a>
-        <a href="/contact/">Contact</a>
+        <a href={url('/rates/')}>Rates</a>
+        <a href={url('/service-areas/')}>Service areas</a>
+        <a href={url('/about/')}>About us</a>
+        <a href={url('/contact/')}>Contact</a>
       </p>
     </div>
   </section>

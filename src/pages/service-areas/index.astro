@@ -4,6 +4,7 @@ import PageHero from '../../components/PageHero.astro';
 import Icon from '../../components/Icon.astro';
 import CtaBand from '../../components/CtaBand.astro';
 import { areas, allCommunities, business, addressLine } from '../../data/site';
+import { url, abs } from '../../lib/paths';
 
 const title = 'Service Areas | Orillia, Rama, Gravenhurst & Barrie';
 const description =
@@ -18,7 +19,7 @@ const listSchema = {
     '@type': 'ListItem',
     position: i + 1,
     name: a.name,
-    url: new URL(`/service-areas/${a.slug}/`, Astro.site).href,
+    url: abs(Astro.site!, `/service-areas/${a.slug}/`),
   })),
 };
 
@@ -51,7 +52,7 @@ const others = allCommunities.filter((c) => !areas.some((a) => a.name === c));
         {
           areas.map((a) => (
             <li>
-              <a href={`/service-areas/${a.slug}/`}>
+              <a href={url(`/service-areas/${a.slug}/`)}>
                 <div class="area-head">
                   <Icon name="map-pin" size={21} />
                   <h3>{a.name}</h3>
@@ -130,7 +131,7 @@ const others = allCommunities.filter((c) => !areas.some((a) => a.name === c));
           minutes. Washago and Rama add a little. Gravenhurst and Barrie add
           more. A snowstorm adds more again, for everybody.
         </p>
-        <a href="/contact/" class="btn btn-navy">
+        <a href={url('/contact/')} class="btn btn-navy">
           Contact &amp; directions
           <Icon name="arrow-right" size={19} />
         </a>

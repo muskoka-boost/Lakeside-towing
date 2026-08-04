@@ -5,6 +5,7 @@ import Icon from '../components/Icon.astro';
 import FaqList from '../components/FaqList.astro';
 import CtaBand from '../components/CtaBand.astro';
 import { business, addressLine, generalFaqs, areas } from '../data/site';
+import { orgId } from '../lib/paths';
 
 const title = 'Contact Lakeside Towing & Recovery | Orillia 24/7';
 const description =
@@ -16,7 +17,7 @@ const contactSchema = {
   '@type': 'ContactPage',
   name: title,
   description,
-  mainEntity: { '@id': `${Astro.site!.origin}/#business` },
+  mainEntity: { '@id': orgId(Astro.site!) },
 };
 ---
 

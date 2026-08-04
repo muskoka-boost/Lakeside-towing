@@ -1,17 +1,20 @@
 ---
 import Icon from './Icon.astro';
 import { business, nav } from '../data/site';
+import { url } from '../lib/paths';
 
 const path = Astro.url.pathname;
-const isActive = (href: string) =>
-  href === '/' ? path === '/' : path === href || path.startsWith(href);
+const isActive = (href: string) => {
+  const target = url(href);
+  return href === '/' ? path === target : path === target || path.startsWith(target);
+};
 ---
 
 <header class="site-header">
   <div class="wrap header-inner">
-    <a href="/" class="brand" aria-label={`${business.name} — home`}>
+    <a href={url('/')} class="brand" aria-label={`${business.name} — home`}>
       <img
-        src="/media/logo.webp"
+        src={url('/media/logo.webp')}
         alt=""
         width="112"
         height="74"
@@ -28,7 +31,7 @@ const isActive = (href: string) =>
         {
           nav.map((item) => (
             <li class={item.children ? 'has-children' : ''}>
-              <a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>
+              <a href={url(item.href)} aria-current={isActive(item.href) ? 'page' : undefined}>
                 {item.label}
                 {item.children && <Icon name="chevron-down" size={15} />}
               </a>
@@ -36,7 +39,7 @@ const isActive = (href: string) =>
                 <ul class="submenu">
                   {item.children.map((child) => (
                     <li>
-                      <a href={child.href}>{child.label}</a>
+                      <a href={url(child.href)}>{child.label}</a>
                     </li>
                   ))}
                 </ul>
@@ -81,14 +84,14 @@ const isActive = (href: string) =>
     {
       nav.map((item) => (
         <li>
-          <a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>
+          <a href={url(item.href)} aria-current={isActive(item.href) ? 'page' : undefined}>
             {item.label}
           </a>
           {item.children && (
             <ul class="drawer-sub">
               {item.children.map((child) => (
                 <li>
-                  <a href={child.href}>{child.label}</a>
+                  <a href={url(child.href)}>{child.label}</a>
                 </li>
               ))}
             </ul>
