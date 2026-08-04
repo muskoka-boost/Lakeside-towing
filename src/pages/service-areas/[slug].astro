@@ -1,0 +1,337 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/PageHero.astro';
+import Icon from '../../components/Icon.astro';
+import ServiceGrid from '../../components/ServiceGrid.astro';
+import RateTable from '../../components/RateTable.astro';
+import FaqList from '../../components/FaqList.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { areas, services, business, addressLine } from '../../data/site';
+
+export function getStaticPaths() {
+  return areas.map((area) => ({ params: { slug: area.slug }, props: { area } }));
+}
+
+const { area } = Astro.props;
+const trail = [
+  { name: 'Service Areas', href: '/service-areas/' },
+  { name: area.name, href: `/service-areas/${area.slug}/` },
+];
+
+const otherAreas = areas.filter((a) => a.slug !== area.slug);
+
+const schema = [
+  {
+    '@type': 'Service',
+    '@id': `${new URL(`/service-areas/${area.slug}/`, Astro.site).href}#service`,
+    name: `Towing in ${area.name}`,
+    description: area.description,
+    serviceType: 'Towing service',
+    provider: { '@id': `${Astro.site!.origin}/#business` },
+    areaServed: {
+      '@type': 'City',
+      name: area.name,
+      containedInPlace: { '@type': 'AdministrativeArea', name: 'Ontario, Canada' },
+    },
+    hasOfferCatalog: {
+      '@type': 'OfferCatalog',
+      name: `Services available in ${area.name}`,
+      itemListElement: services.map((s) => ({
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: `${s.name} in ${area.name}`,
+          url: new URL(`/services/${s.slug}/`, Astro.site).href,
+        },
+      })),
+    },
+  },
+  {
+    '@type': 'FAQPage',
+    mainEntity: area.faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  },
+];
+---
+
+<Layout
+  title={area.title}
+  description={area.description}
+  breadcrumbs={trail}
+  schema={schema}
+>
+  <PageHero
+    eyebrow="Service area"
+    title={area.h1}
+    lede={area.intro}
+    trail={trail}
+    facts={[area.proximity, '24/7 dispatch', 'All services available']}
+  />
+
+  <section class="section">
+    <div class="wrap area-body">
+      <article class="prose">
+        {
+          area.body.map((block) => (
+            <>
+              <h2>{block.heading}</h2>
+              <p>{block.text}</p>
+            </>
+          ))
+        }
+      </article>
+
+      <aside class="area-aside">
+        <div class="aside-card aside-call">
+          <p class="aside-eyebrow">Towing in {area.name}</p>
+          <a href={business.phoneHref} class="aside-phone">{business.phoneDisplay}</a>
+          <p class="aside-note">
+            <Icon name="clock" size={14} /> 24 hours, every day
+          </p>
+          <a href={business.phoneHref} class="btn btn-primary" style="width:100%">
+            <Icon name="phone" size={19} />
+            Call now
+          </a>
+        </div>
+
+        <div class="aside-card">
+          <h2 class="aside-h">Roads &amp; landmarks</h2>
+          <ul class="landmarks">
+            {
+              area.landmarks.map((l) => (
+                <li>
+                  <Icon name="map-pin" size={14} />
+                  <span>{l}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+
+        <div class="aside-card">
+          <h2 class="aside-h">Nearby areas</h2>
+          <ul class="nearby">
+            {
+              otherAreas.map((a) => (
+                <li>
+                  <a href={`/service-areas/${a.slug}/`}>
+                    {a.name}
+                    <Icon name="chevron-right" size={14} />
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+          <p class="aside-fine">
+            <a href="/service-areas/">All communities we cover →</a>
+          </p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section section-paper">
+    <div class="wrap">
+      <div class="center">
+        <p class="eyebrow">Available here</p>
+        <h2>Every service, in {area.name}</h2>
+        <hr class="rule" />
+        <p class="lede">
+          Nothing is held back for the home city. All eight services run
+          throughout our coverage area, at the same rates.
+        </p>
+      </div>
+      <div style="margin-top:2.5rem">
+        <ServiceGrid />
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap wrap-narrow">
+      <p class="eyebrow">Pricing</p>
+      <h2>Rates in {area.name}</h2>
+      <hr class="rule" />
+      <RateTable />
+    </div>
+  </section>
+
+  <section class="section section-paper">
+    <div class="wrap wrap-narrow">
+      <FaqList heading={`Towing in ${area.name} — questions`} faqs={area.faqs} />
+    </div>
+  </section>
+
+  <section class="section section-navy">
+    <div class="wrap wrap-narrow center">
+      <p class="eyebrow">Our base</p>
+      <h2>Dispatched from Orillia</h2>
+      <hr class="rule" />
+      <p class="lede" style="margin-inline:auto">
+        {addressLine} — our trucks and our MTO-licensed storage yard, both in one
+        place. {area.proximity}
+      </p>
+      <a
+        href={business.mapsUrl}
+        target="_blank"
+        rel="noopener"
+        class="btn btn-ghost-light"
+        style="margin-top:.75rem"
+      >
+        <Icon name="map-pin" size={19} />
+        View on Google Maps
+      </a>
+    </div>
+  </section>
+
+  <CtaBand
+    heading={`Need a tow in ${area.name}?`}
+    text="Tell us where you are and what has happened. You will get a firm price and a realistic arrival window on that first call."
+  />
+</Layout>
+
+<style>
+  .area-body {
+    display: grid;
+    gap: 2.5rem;
+    align-items: start;
+  }
+
+  @media (min-width: 980px) {
+    .area-body {
+      grid-template-columns: minmax(0, 1.55fr) minmax(280px, 0.85fr);
+      gap: 3.25rem;
+    }
+
+    .area-aside {
+      position: sticky;
+      top: calc(var(--header-h) + 20px);
+    }
+  }
+
+  .area-aside {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .aside-card {
+    padding: 1.4rem;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+
+  .aside-call {
+    background: linear-gradient(150deg, var(--navy), var(--navy-deep));
+    border-color: var(--navy-deep);
+    color: #fff;
+    text-align: center;
+  }
+
+  .aside-eyebrow {
+    margin: 0 0 0.35rem;
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--sky);
+  }
+
+  .aside-phone {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 2.05rem;
+    font-weight: 700;
+    color: #fff;
+    text-decoration: none;
+    margin-bottom: 0.25rem;
+  }
+
+  .aside-phone:hover {
+    color: var(--sky);
+  }
+
+  .aside-note {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    margin: 0 0 1rem;
+    font-size: 0.8rem;
+    color: rgb(255 255 255 / 70%);
+  }
+
+  .aside-h {
+    font-size: 1.1rem;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--navy-deep);
+    margin-bottom: 0.85rem;
+  }
+
+  .landmarks {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .landmarks li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+  }
+
+  .landmarks :global(.icon) {
+    flex: none;
+    margin-top: 4px;
+    color: var(--red);
+  }
+
+  .nearby {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.1rem;
+  }
+
+  .nearby li {
+    margin: 0;
+  }
+
+  .nearby a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 0.5rem;
+    border-radius: 7px;
+    font-size: 0.93rem;
+    font-weight: 500;
+    color: var(--ink-soft);
+    text-decoration: none;
+  }
+
+  .nearby a:hover {
+    background: var(--paper);
+    color: var(--red);
+  }
+
+  .nearby :global(.icon) {
+    color: var(--line);
+  }
+
+  .aside-fine {
+    margin: 0.9rem 0 0;
+    font-size: 0.83rem;
+    color: var(--ink-faint);
+  }
+</style>

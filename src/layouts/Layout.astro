@@ -1,0 +1,202 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import CallBar from '../components/CallBar.astro';
+import { business, addressLine, allCommunities, services } from '../data/site';
+
+export interface Props {
+  title: string;
+  description: string;
+  /** Breadcrumb trail, excluding Home which is prepended automatically. */
+  breadcrumbs?: { name: string; href: string }[];
+  /** Extra JSON-LD objects merged into the page graph. */
+  schema?: Record<string, unknown>[];
+  /** Override the share image (path relative to site root). */
+  ogImage?: string;
+  /** Keep a page out of the index — used only by 404. */
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description,
+  breadcrumbs = [],
+  schema = [],
+  ogImage = '/media/og-lakeside-towing.jpg',
+  noindex = false,
+} = Astro.props;
+
+const site = Astro.site!;
+const canonical = new URL(Astro.url.pathname, site).href;
+const ogImageUrl = new URL(ogImage, site).href;
+const orgId = `${site.origin}/#business`;
+
+/**
+ * The LocalBusiness node. Every page carries it — Google reads the whole
+ * graph per URL and there is no penalty for repeating a stable @id.
+ */
+const localBusiness = {
+  '@type': ['LocalBusiness', 'AutomotiveBusiness'],
+  '@id': orgId,
+  name: business.name,
+  legalName: business.legalName,
+  slogan: business.tagline,
+  description:
+    'Full-service 24/7 towing and recovery serving Orillia and the surrounding area — emergency towing, long distance transport, enclosed transport, winch-out recovery, battery boosts, lockouts, fuel delivery and MTO-licensed vehicle storage.',
+  url: `${site.origin}/`,
+  telephone: business.phoneE164,
+  email: business.email,
+  image: new URL('/media/logo.jpg', site).href,
+  logo: new URL('/media/logo.jpg', site).href,
+  priceRange: '$$',
+  currenciesAccepted: 'CAD',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: business.street,
+    addressLocality: business.city,
+    addressRegion: business.region,
+    postalCode: business.postalCode,
+    addressCountry: business.country,
+  },
+  geo: { '@type': 'GeoCoordinates', latitude: business.lat, longitude: business.lng },
+  hasMap: business.mapsUrl,
+  sameAs: [business.facebook],
+  openingHoursSpecification: [
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: [
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday',
+        'Sunday',
+      ],
+      opens: '00:00',
+      closes: '23:59',
+    },
+  ],
+  areaServed: allCommunities.map((name) => ({
+    '@type': 'City',
+    name,
+    containedInPlace: { '@type': 'AdministrativeArea', name: 'Ontario, Canada' },
+  })),
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Towing & roadside services',
+    itemListElement: services.map((s) => ({
+      '@type': 'Offer',
+      itemOffered: {
+        '@type': 'Service',
+        name: s.name,
+        description: s.summary,
+        url: `${site.origin}/services/${s.slug}/`,
+      },
+    })),
+  },
+};
+
+const breadcrumbNode =
+  breadcrumbs.length > 0
+    ? {
+        '@type': 'BreadcrumbList',
+        itemListElement: [{ name: 'Home', href: '/' }, ...breadcrumbs].map((c, i) => ({
+          '@type': 'ListItem',
+          position: i + 1,
+          name: c.name,
+          item: new URL(c.href, site).href,
+        })),
+      }
+    : null;
+
+const graph = [
+  localBusiness,
+  {
+    '@type': 'WebSite',
+    '@id': `${site.origin}/#website`,
+    url: `${site.origin}/`,
+    name: business.name,
+    publisher: { '@id': orgId },
+    inLanguage: 'en-CA',
+  },
+  {
+    '@type': 'WebPage',
+    '@id': `${canonical}#webpage`,
+    url: canonical,
+    name: title,
+    description,
+    isPartOf: { '@id': `${site.origin}/#website` },
+    about: { '@id': orgId },
+    inLanguage: 'en-CA',
+  },
+  ...(breadcrumbNode ? [breadcrumbNode] : []),
+  ...schema,
+];
+
+const jsonLd = { '@context': 'https://schema.org', '@graph': graph };
+---
+
+<!doctype html>
+<html lang="en-CA">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
+
+    <!-- Local relevance signals -->
+    <meta name="geo.region" content="CA-ON" />
+    <meta name="geo.placename" content="Orillia, Ontario" />
+    <meta name="geo.position" content={`${business.lat};${business.lng}`} />
+    <meta name="ICBM" content={`${business.lat}, ${business.lng}`} />
+    <meta name="author" content={business.name} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={business.name} />
+    <meta property="og:locale" content="en_CA" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Lakeside Towing & Recovery tow truck" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <!-- Icons -->
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#0d3b91" />
+
+    <!-- Fonts: preconnect then load without blocking render -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Inter:wght@400;500;600;700&display=swap"
+    />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />
+  </head>
+
+  <body>
+    <a href="#main" class="skip-link">Skip to main content</a>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+    <CallBar />
+  </body>
+</html>

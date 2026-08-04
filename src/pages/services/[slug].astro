@@ -1,0 +1,451 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/PageHero.astro';
+import Icon from '../../components/Icon.astro';
+import RateTable from '../../components/RateTable.astro';
+import FaqList from '../../components/FaqList.astro';
+import ServiceGrid from '../../components/ServiceGrid.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { services, areas, business, rateByKey } from '../../data/site';
+
+export function getStaticPaths() {
+  return services.map((service) => ({ params: { slug: service.slug }, props: { service } }));
+}
+
+const { service } = Astro.props;
+const trail = [
+  { name: 'Services', href: '/services/' },
+  { name: service.name, href: `/services/${service.slug}/` },
+];
+
+const headline = service.rateKeys.map((k) => rateByKey(k)).filter(Boolean);
+const facts = [
+  '24/7 dispatch',
+  ...headline.slice(0, 1).map((r) => `${r.label}: ${r.price}${r.unit ? ` ${r.unit}` : ''}`),
+  'Price quoted before we roll',
+];
+
+const schema = [
+  {
+    '@type': 'Service',
+    '@id': `${new URL(`/services/${service.slug}/`, Astro.site).href}#service`,
+    name: service.name,
+    alternateName: service.h1,
+    description: service.description,
+    serviceType: service.name,
+    provider: { '@id': `${Astro.site!.origin}/#business` },
+    areaServed: areas.map((a) => ({ '@type': 'City', name: a.name })),
+    availableChannel: {
+      '@type': 'ServiceChannel',
+      servicePhone: { '@type': 'ContactPoint', telephone: business.phoneE164 },
+      availableLanguage: 'English',
+    },
+    hoursAvailable: {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: [
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday',
+        'Sunday',
+      ],
+      opens: '00:00',
+      closes: '23:59',
+    },
+  },
+  {
+    '@type': 'FAQPage',
+    mainEntity: service.faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  },
+  {
+    '@type': 'HowTo',
+    name: `How to get ${service.name.toLowerCase()} from ${business.name}`,
+    description: service.summary,
+    step: service.steps.map((s, i) => ({
+      '@type': 'HowToStep',
+      position: i + 1,
+      name: s.title,
+      text: s.body,
+    })),
+  },
+];
+---
+
+<Layout
+  title={service.title}
+  description={service.description}
+  breadcrumbs={trail}
+  schema={schema}
+>
+  <PageHero
+    eyebrow="Service"
+    title={service.h1}
+    lede={service.intro}
+    trail={trail}
+    facts={facts}
+  />
+
+  <section class="section">
+    <div class="wrap service-body">
+      <article class="prose">
+        <h2>What&rsquo;s included</h2>
+        <ul class="includes">
+          {
+            service.includes.map((item) => (
+              <li>
+                <Icon name="check" size={17} />
+                <span>{item}</span>
+              </li>
+            ))
+          }
+        </ul>
+
+        {
+          service.body.map((block) => (
+            <>
+              <h2>{block.heading}</h2>
+              <p>{block.text}</p>
+            </>
+          ))
+        }
+      </article>
+
+      <aside class="service-aside">
+        <div class="aside-card aside-call">
+          <p class="aside-eyebrow">Need this now?</p>
+          <a href={business.phoneHref} class="aside-phone">{business.phoneDisplay}</a>
+          <p class="aside-note">
+            <Icon name="clock" size={14} /> Answered 24 hours a day
+          </p>
+          <a href={business.phoneHref} class="btn btn-primary" style="width:100%">
+            <Icon name="phone" size={19} />
+            Call now
+          </a>
+        </div>
+
+        <div class="aside-card">
+          <h2 class="aside-h">Typical rate</h2>
+          {
+            headline.map((r) => (
+              <div class="aside-rate">
+                <span class="aside-rate-label">{r.label}</span>
+                <span class="aside-rate-price">
+                  {r.price}
+                  {r.unit && <em>{r.unit}</em>}
+                </span>
+              </div>
+            ))
+          }
+          <p class="aside-fine">
+            Typical, not fixed — conditions and distance change it. You get a firm
+            number on the phone. <a href="/rates/">All rates →</a>
+          </p>
+        </div>
+
+        <div class="aside-card">
+          <h2 class="aside-h">Where we cover</h2>
+          <ul class="aside-areas">
+            {
+              areas.map((a) => (
+                <li>
+                  <a href={`/service-areas/${a.slug}/`}>
+                    <Icon name="map-pin" size={15} />
+                    {a.name}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+          <p class="aside-fine">
+            <a href="/service-areas/">Every community we serve →</a>
+          </p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ========================================================== Steps -- -->
+  <section class="section section-navy">
+    <div class="wrap">
+      <p class="eyebrow">How it works</p>
+      <h2>From the call to the drop-off</h2>
+      <hr class="rule" />
+      <ol class="steps">
+        {
+          service.steps.map((s, i) => (
+            <li>
+              <span class="step-num">{String(i + 1).padStart(2, '0')}</span>
+              <h3>{s.title}</h3>
+              <p>{s.body}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- ========================================================== Rates -- -->
+  <section class="section section-paper">
+    <div class="wrap wrap-narrow">
+      <p class="eyebrow">Pricing</p>
+      <h2>What this costs</h2>
+      <hr class="rule" />
+      <RateTable only={service.rateKeys} />
+    </div>
+  </section>
+
+  <!-- ============================================================ FAQ -- -->
+  <section class="section">
+    <div class="wrap wrap-narrow">
+      <FaqList heading={`${service.name} — common questions`} faqs={service.faqs} />
+    </div>
+  </section>
+
+  <!-- ======================================================== Related -- -->
+  <section class="section section-paper">
+    <div class="wrap">
+      <div class="center">
+        <p class="eyebrow">Also from Lakeside</p>
+        <h2>Related services</h2>
+        <hr class="rule" />
+      </div>
+      <div style="margin-top:2.25rem">
+        <ServiceGrid only={service.related} exclude={service.slug} />
+      </div>
+    </div>
+  </section>
+
+  <CtaBand />
+</Layout>
+
+<style>
+  .service-body {
+    display: grid;
+    gap: 2.5rem;
+    align-items: start;
+  }
+
+  @media (min-width: 980px) {
+    .service-body {
+      grid-template-columns: minmax(0, 1.55fr) minmax(280px, 0.85fr);
+      gap: 3.25rem;
+    }
+
+    .service-aside {
+      position: sticky;
+      top: calc(var(--header-h) + 20px);
+    }
+  }
+
+  .includes {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2rem;
+    display: grid;
+    gap: 0.65rem;
+  }
+
+  .includes li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    margin: 0;
+    color: var(--ink-soft);
+  }
+
+  .includes :global(.icon) {
+    flex: none;
+    margin-top: 4px;
+    padding: 3px;
+    background: var(--sky-soft);
+    border-radius: 50%;
+    color: var(--navy);
+    box-sizing: content-box;
+  }
+
+  /* --------------------------------------------------------- aside ---- */
+
+  .service-aside {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .aside-card {
+    padding: 1.4rem;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+
+  .aside-call {
+    background: linear-gradient(150deg, var(--navy), var(--navy-deep));
+    border-color: var(--navy-deep);
+    color: #fff;
+    text-align: center;
+  }
+
+  .aside-eyebrow {
+    margin: 0 0 0.35rem;
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--sky);
+  }
+
+  .aside-phone {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 2.05rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: #fff;
+    text-decoration: none;
+    margin-bottom: 0.25rem;
+  }
+
+  .aside-phone:hover {
+    color: var(--sky);
+  }
+
+  .aside-note {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    margin: 0 0 1rem;
+    font-size: 0.8rem;
+    color: rgb(255 255 255 / 70%);
+  }
+
+  .aside-h {
+    font-size: 1.1rem;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--navy-deep);
+    margin-bottom: 0.9rem;
+  }
+
+  .aside-rate {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-block: 0.6rem;
+    border-bottom: 1px solid var(--line-soft);
+  }
+
+  .aside-rate-label {
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+  }
+
+  .aside-rate-price {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--red);
+    white-space: nowrap;
+  }
+
+  .aside-rate-price em {
+    display: block;
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    font-style: normal;
+    font-weight: 500;
+    color: var(--ink-faint);
+    text-align: right;
+  }
+
+  .aside-fine {
+    margin: 0.9rem 0 0;
+    font-size: 0.83rem;
+    line-height: 1.5;
+    color: var(--ink-faint);
+  }
+
+  .aside-areas {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.15rem;
+  }
+
+  .aside-areas li {
+    margin: 0;
+  }
+
+  .aside-areas a {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.4rem 0.5rem;
+    border-radius: 7px;
+    font-size: 0.92rem;
+    color: var(--ink-soft);
+    text-decoration: none;
+  }
+
+  .aside-areas a:hover {
+    background: var(--paper);
+    color: var(--red);
+  }
+
+  .aside-areas :global(.icon) {
+    color: var(--red);
+    flex: none;
+  }
+
+  /* --------------------------------------------------------- steps ---- */
+
+  .steps {
+    display: grid;
+    gap: 1.5rem;
+    list-style: none;
+    margin: 2.25rem 0 0;
+    padding: 0;
+    counter-reset: step;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  }
+
+  .steps li {
+    margin: 0;
+    padding: 1.4rem;
+    background: rgb(255 255 255 / 6%);
+    border: 1px solid rgb(255 255 255 / 12%);
+    border-radius: var(--radius);
+  }
+
+  .step-num {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 2.1rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--red);
+    margin-bottom: 0.5rem;
+  }
+
+  .steps h3 {
+    font-size: 1.24rem;
+    letter-spacing: 0.02em;
+    color: #fff;
+    margin-bottom: 0.4rem;
+  }
+
+  .steps p {
+    margin: 0;
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: rgb(255 255 255 / 74%);
+  }
+</style>

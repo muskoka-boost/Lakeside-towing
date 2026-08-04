@@ -1,0 +1,133 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/PageHero.astro';
+import ServiceGrid from '../../components/ServiceGrid.astro';
+import RateTable from '../../components/RateTable.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import Icon from '../../components/Icon.astro';
+import { services, business } from '../../data/site';
+
+const title = 'Towing & Roadside Services | Orillia | Lakeside Towing';
+const description =
+  'Every service we offer around Orillia: emergency towing, long distance and enclosed transport, winch-out recovery, boosts, lockouts, fuel delivery and storage.';
+
+const trail = [{ name: 'Services', href: '/services/' }];
+
+const listSchema = {
+  '@type': 'ItemList',
+  name: 'Towing and roadside services',
+  itemListElement: services.map((s, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: s.name,
+    url: new URL(`/services/${s.slug}/`, Astro.site).href,
+  })),
+};
+---
+
+<Layout title={title} description={description} breadcrumbs={trail} schema={[listSchema]}>
+  <PageHero
+    eyebrow="Services"
+    title="Everything we do"
+    lede="Eight services covering just about every way a vehicle can ruin your day. All of them available 24 hours a day, all of them quoted before we dispatch."
+    trail={trail}
+    facts={['24/7 dispatch', 'OPP approved', 'No membership required']}
+    secondary={{ label: 'See our rates', href: '/rates/' }}
+  />
+
+  <section class="section">
+    <div class="wrap">
+      <ServiceGrid />
+    </div>
+  </section>
+
+  <section class="section section-paper">
+    <div class="wrap">
+      <div class="split">
+        <div>
+          <p class="eyebrow">Not sure what you need?</p>
+          <h2>Tow, or roadside call?</h2>
+          <hr class="rule" />
+          <p>
+            The distinction matters because it changes the price by a lot. If the
+            vehicle can be made driveable at the roadside — a dead battery, an
+            empty tank, keys locked inside — that is a flat-rate roadside call.
+            If it cannot be driven safely, it needs a tow, priced by distance.
+          </p>
+          <p>
+            And if the vehicle is off the road entirely — in a ditch, a snowbank,
+            soft ground — that is a
+            <a href="/services/winch-out-recovery/">winch-out</a>, billed by the
+            hour, and it is a separate job from the tow that may follow it.
+          </p>
+          <p class="no-guess">
+            <Icon name="info" size={18} />
+            <span>
+              You do not have to work this out yourself. Describe what happened
+              on the phone and we will tell you which one it is and what it costs.
+            </span>
+          </p>
+          <a href={business.phoneHref} class="btn btn-primary">
+            <Icon name="phone" size={20} />
+            {business.phoneDisplay}
+          </a>
+        </div>
+
+        <div>
+          <h3 class="rates-h">Typical rates at a glance</h3>
+          <RateTable showDisclaimer={false} />
+          <p style="margin-top:1rem">
+            <a href="/rates/">Full rate list and what affects the price →</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand />
+</Layout>
+
+<style>
+  .split {
+    display: grid;
+    gap: 2.5rem;
+    align-items: start;
+  }
+
+  @media (min-width: 950px) {
+    .split {
+      grid-template-columns: 0.85fr 1.15fr;
+      gap: 3.25rem;
+    }
+  }
+
+  .split p {
+    color: var(--ink-soft);
+  }
+
+  .rates-h {
+    font-size: 1.35rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--navy-deep);
+  }
+
+  .no-guess {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    padding: 0.95rem 1.1rem;
+    margin-bottom: 1.5rem !important;
+    background: #fff;
+    border-left: 4px solid var(--red);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    font-size: 0.93rem;
+    color: var(--ink) !important;
+  }
+
+  .no-guess :global(.icon) {
+    flex: none;
+    margin-top: 3px;
+    color: var(--red);
+  }
+</style>

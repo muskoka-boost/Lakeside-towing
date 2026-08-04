@@ -1,0 +1,287 @@
+---
+import Icon from './Icon.astro';
+import { business, addressLine, services, areas } from '../data/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="wrap footer-grid">
+    <div class="footer-brand">
+      <img src="/media/logo.webp" alt={`${business.name} logo`} width="180" height="120" loading="lazy" />
+      <p class="footer-tagline">&ldquo;{business.tagline}&rdquo;</p>
+      <p class="footer-blurb">
+        Local, full-service towing and recovery for Orillia and the surrounding
+        area. OPP approved, MTO licensed, fully insured — and open every hour of
+        every day.
+      </p>
+      <a
+        href={business.facebook}
+        target="_blank"
+        rel="noopener"
+        class="footer-social"
+        aria-label={`${business.name} on Facebook`}
+      >
+        <Icon name="facebook" size={19} />
+        <span>Facebook</span>
+      </a>
+    </div>
+
+    <div class="footer-col">
+      <h2>Services</h2>
+      <ul>
+        {services.map((s) => <li><a href={`/services/${s.slug}/`}>{s.name}</a></li>)}
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h2>Service Areas</h2>
+      <ul>
+        {areas.map((a) => <li><a href={`/service-areas/${a.slug}/`}>{a.name}</a></li>)}
+        <li><a href="/service-areas/">All areas we cover</a></li>
+      </ul>
+      <h2 class="mt">More</h2>
+      <ul>
+        <li><a href="/rates/">Rates</a></li>
+        <li><a href="/about/">About us</a></li>
+        <li><a href="/contact/">Contact</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col footer-contact">
+      <h2>Contact</h2>
+      <a href={business.phoneHref} class="footer-phone">
+        <Icon name="phone" size={20} />
+        {business.phoneDisplay}
+      </a>
+      <p class="footer-hours">
+        <Icon name="clock" size={16} /> Open 24 hours · 7 days · 365
+      </p>
+      <a href={`mailto:${business.email}`} class="footer-link">
+        <Icon name="mail" size={16} />
+        <span>{business.email}</span>
+      </a>
+      <a href={business.mapsUrl} target="_blank" rel="noopener" class="footer-link">
+        <Icon name="map-pin" size={16} />
+        <address>{addressLine}</address>
+      </a>
+    </div>
+  </div>
+
+  <div class="footer-bar">
+    <div class="wrap footer-bar-inner">
+      <p>&copy; {year} {business.legalName}. All rights reserved.</p>
+      <p class="footer-cert">
+        MTO Vehicle Storage Certificate {business.storageCertificate} · Licensed &amp; insured
+      </p>
+      <p class="footer-credit">
+        Created by <a href="https://muskokadigitalboost.ca" target="_blank" rel="noopener"
+          >Muskoka Digital Boost</a
+        >
+      </p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--navy-deep);
+    color: rgb(255 255 255 / 78%);
+    /* Clear the sticky mobile call bar. */
+    padding-bottom: 76px;
+  }
+
+  @media (min-width: 720px) {
+    .site-footer {
+      padding-bottom: 0;
+    }
+  }
+
+  .footer-grid {
+    display: grid;
+    gap: 2.4rem;
+    padding-block: clamp(2.75rem, 6vw, 4rem);
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 640px) {
+    .footer-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1000px) {
+    .footer-grid {
+      grid-template-columns: 1.5fr 1fr 1fr 1.15fr;
+      gap: 2.6rem;
+    }
+  }
+
+  .footer-brand img {
+    width: 150px;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+  }
+
+  .footer-tagline {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-style: italic;
+    color: var(--sky);
+    margin-bottom: 0.6rem;
+  }
+
+  .footer-blurb {
+    font-size: 0.93rem;
+    line-height: 1.6;
+    max-width: 38ch;
+  }
+
+  .footer-social {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.9rem;
+    background: rgb(255 255 255 / 8%);
+    border-radius: 8px;
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  .footer-social:hover {
+    background: var(--red);
+    color: #fff;
+  }
+
+  .footer-col h2 {
+    font-size: 1.12rem;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: #fff;
+    margin-bottom: 0.9rem;
+    padding-bottom: 0.55rem;
+    border-bottom: 2px solid rgb(255 255 255 / 12%);
+  }
+
+  .footer-col h2.mt {
+    margin-top: 1.8rem;
+  }
+
+  .footer-col ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .footer-col li {
+    margin-bottom: 0.15rem;
+  }
+
+  /* Padded to a comfortable tap target rather than a bare text baseline. */
+  .footer-col a {
+    display: inline-block;
+    padding-block: 5px;
+    font-size: 0.92rem;
+    color: rgb(255 255 255 / 72%);
+    text-decoration: none;
+  }
+
+  .footer-col a:hover {
+    color: var(--sky);
+    text-decoration: underline;
+  }
+
+  .footer-phone {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-family: var(--font-display);
+    font-size: 1.85rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    color: #fff !important;
+    text-decoration: none !important;
+    margin-bottom: 0.5rem;
+  }
+
+  .footer-phone:hover {
+    color: var(--sky) !important;
+  }
+
+  .footer-hours {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.9rem;
+    color: var(--sky);
+    margin-bottom: 1rem;
+  }
+
+  .footer-link {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.55rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.9rem;
+    color: rgb(255 255 255 / 78%);
+    text-decoration: none;
+    word-break: break-word;
+  }
+
+  .footer-link:hover {
+    color: var(--sky);
+  }
+
+  .footer-link :global(.icon) {
+    flex: none;
+    margin-top: 3px;
+    color: var(--sky);
+  }
+
+  .footer-link address {
+    font-style: normal;
+  }
+
+  .footer-bar {
+    border-top: 1px solid rgb(255 255 255 / 10%);
+  }
+
+  .footer-bar-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem 1.5rem;
+    padding-block: 1.15rem;
+  }
+
+  /* Opacities below ~50% drop under 4.5:1 against navy-deep, so the muted
+     footer line is held at the lightest value that still clears AA. */
+  .footer-bar p {
+    margin: 0;
+    font-size: 0.8rem;
+    color: rgb(255 255 255 / 66%);
+  }
+
+  .footer-cert {
+    color: rgb(255 255 255 / 58%) !important;
+  }
+
+  .footer-credit {
+    font-size: 0.75rem !important;
+    color: rgb(255 255 255 / 55%) !important;
+  }
+
+  .footer-credit a {
+    color: rgb(255 255 255 / 70%);
+    text-decoration: none;
+  }
+
+  .footer-credit a:hover {
+    color: var(--sky);
+    text-decoration: underline;
+  }
+</style>

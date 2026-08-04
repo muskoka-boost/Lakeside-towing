@@ -1,0 +1,387 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import FaqList from '../components/FaqList.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { business, addressLine, generalFaqs, areas } from '../data/site';
+
+const title = 'Contact Lakeside Towing & Recovery | Orillia 24/7';
+const description =
+  'Call Lakeside Towing & Recovery on (249) 385-5240 — answered 24 hours a day. Based at 123 Norweld Dr, Orillia, ON. Towing, recovery and roadside help.';
+
+const trail = [{ name: 'Contact', href: '/contact/' }];
+
+const contactSchema = {
+  '@type': 'ContactPage',
+  name: title,
+  description,
+  mainEntity: { '@id': `${Astro.site!.origin}/#business` },
+};
+---
+
+<Layout
+  title={title}
+  description={description}
+  breadcrumbs={trail}
+  schema={[contactSchema]}
+>
+  <PageHero
+    eyebrow="Contact"
+    title="Get in touch"
+    lede="The fastest way to reach us is always the phone — it is answered by a person, 24 hours a day. Email is fine for billing and non-urgent enquiries, but if your vehicle is stuck right now, call."
+    trail={trail}
+    facts={['Answered 24/7', 'Based in Orillia', 'No membership needed']}
+    secondary={{ label: 'See our rates', href: '/rates/' }}
+  />
+
+  <!-- ====================================================== Contact -- -->
+  <section class="section">
+    <div class="wrap">
+      <div class="contact-cards">
+        <a href={business.phoneHref} class="ccard ccard-primary">
+          <Icon name="phone" size={30} />
+          <span class="ccard-label">Call us — 24 hours</span>
+          <strong class="ccard-value">{business.phoneDisplay}</strong>
+          <span class="ccard-note">
+            Emergencies, tows, recoveries and roadside. Any hour, any day,
+            including holidays.
+          </span>
+        </a>
+
+        <a href={`mailto:${business.email}`} class="ccard">
+          <Icon name="mail" size={28} />
+          <span class="ccard-label">Email</span>
+          <strong class="ccard-value ccard-value-sm">{business.email}</strong>
+          <span class="ccard-note">
+            Billing questions, invoices and non-urgent enquiries. Not monitored
+            overnight — call for anything time-sensitive.
+          </span>
+        </a>
+
+        <a href={business.mapsUrl} target="_blank" rel="noopener" class="ccard">
+          <Icon name="map-pin" size={28} />
+          <span class="ccard-label">Our yard</span>
+          <strong class="ccard-value ccard-value-sm">
+            <address>{addressLine}</address>
+          </strong>
+          <span class="ccard-note">
+            Trucks and MTO-licensed storage. Call ahead before coming to collect
+            a vehicle or belongings.
+          </span>
+        </a>
+
+        <div class="ccard ccard-static">
+          <Icon name="clock" size={28} />
+          <span class="ccard-label">Hours</span>
+          <strong class="ccard-value ccard-value-sm">Open 24 hours</strong>
+          <span class="ccard-note">
+            Seven days a week, 365 days a year. There is no closing time and no
+            after-hours surcharge.
+          </span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================================================== What to say -- -->
+  <section class="section section-paper">
+    <div class="wrap what-to-say">
+      <div>
+        <p class="eyebrow">Make the call quick</p>
+        <h2>What to have ready</h2>
+        <hr class="rule" />
+        <p>
+          You do not need any of this to call us — but having it to hand gets a
+          truck moving faster and gets you an accurate price on the first
+          attempt.
+        </p>
+        <ol class="ready-list">
+          <li>
+            <strong>Where you are.</strong> A cross street, a business name, a
+            highway marker, or a fire number on a rural road. &ldquo;Just past the
+            bend&rdquo; is not enough at night.
+          </li>
+          <li>
+            <strong>The vehicle.</strong> Year, make, model and colour. Whether it
+            is front, rear or all-wheel drive if you know.
+          </li>
+          <li>
+            <strong>What happened.</strong> Will not start, will not steer, in the
+            ditch, out of fuel, keys inside. This is what determines whether you
+            need a tow, a roadside call or a winch-out.
+          </li>
+          <li>
+            <strong>Where it is going.</strong> Your mechanic, a dealership, your
+            driveway, or our storage yard.
+          </li>
+          <li>
+            <strong>Whether you are safe.</strong> If you are on a live highway
+            shoulder or the vehicle is in water, say so first — it changes how we
+            prioritise the call.
+          </li>
+        </ol>
+      </div>
+
+      <div class="emergency">
+        <Icon name="alert-triangle" size={34} />
+        <h2>If anyone is hurt</h2>
+        <p>
+          Call <strong>911</strong> first. Always. Police, fire and paramedics get
+          there faster than we do and they are what an injury scene needs. Once
+          everyone is safe and the scene is being managed, call us for the
+          vehicle.
+        </p>
+        <p class="emergency-note">
+          If your vehicle is in a live traffic lane and you cannot move it, stay
+          belted inside with your hazards on rather than standing beside it.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================== Map -- -->
+  <section class="section">
+    <div class="wrap">
+      <div class="center">
+        <p class="eyebrow">Find us</p>
+        <h2>123 Norweld Dr, Orillia</h2>
+        <hr class="rule" />
+        <p class="lede">
+          Serving {areas.map((a) => a.name).join(', ')} and the communities around
+          Lake Couchiching.
+        </p>
+      </div>
+
+      <div class="map-frame">
+        <iframe
+          src={business.mapsEmbed}
+          title="Map showing Lakeside Towing & Recovery at 123 Norweld Dr, Orillia, Ontario"
+          width="1200"
+          height="500"
+          style="border:0;width:100%;height:100%"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+
+      <p class="map-actions">
+        <a href={business.mapsUrl} target="_blank" rel="noopener" class="btn btn-navy">
+          <Icon name="map-pin" size={19} />
+          Directions on Google Maps
+        </a>
+        <a href={business.facebook} target="_blank" rel="noopener" class="btn btn-ghost">
+          <Icon name="facebook" size={19} />
+          Find us on Facebook
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <section class="section section-paper">
+    <div class="wrap wrap-narrow">
+      <FaqList faqs={generalFaqs} />
+    </div>
+  </section>
+
+  <CtaBand />
+</Layout>
+
+<style>
+  .contact-cards {
+    display: grid;
+    gap: 1.1rem;
+    grid-template-columns: repeat(auto-fit, minmax(258px, 1fr));
+  }
+
+  .ccard {
+    display: flex;
+    flex-direction: column;
+    padding: 1.6rem;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.18s, transform 0.18s;
+  }
+
+  a.ccard:hover {
+    border-color: var(--red);
+    transform: translateY(-3px);
+  }
+
+  .ccard :global(.icon) {
+    color: var(--red);
+    margin-bottom: 0.9rem;
+  }
+
+  .ccard-primary {
+    background: linear-gradient(150deg, var(--navy), var(--navy-deep));
+    border-color: var(--navy-deep);
+    color: #fff;
+  }
+
+  .ccard-primary :global(.icon) {
+    color: var(--sky);
+  }
+
+  .ccard-label {
+    font-size: 0.73rem;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 0.3rem;
+  }
+
+  .ccard-primary .ccard-label {
+    color: var(--sky);
+  }
+
+  .ccard-value {
+    font-family: var(--font-display);
+    font-size: 2.05rem;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: 0.02em;
+    color: var(--navy-deep);
+    margin-bottom: 0.6rem;
+    word-break: break-word;
+  }
+
+  .ccard-primary .ccard-value {
+    color: #fff;
+  }
+
+  .ccard-value-sm {
+    font-size: 1.2rem;
+    letter-spacing: 0.01em;
+  }
+
+  .ccard-value address {
+    font-style: normal;
+  }
+
+  .ccard-note {
+    font-size: 0.88rem;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+
+  .ccard-primary .ccard-note {
+    color: rgb(255 255 255 / 76%);
+  }
+
+  /* ---------------------------------------------------- what to say -- */
+
+  .what-to-say {
+    display: grid;
+    gap: 2.25rem;
+    align-items: start;
+  }
+
+  @media (min-width: 950px) {
+    .what-to-say {
+      grid-template-columns: 1.35fr 0.85fr;
+      gap: 3rem;
+    }
+  }
+
+  /* .emergency is also a direct div child here, so this must exclude it —
+     otherwise it out-specifies `.emergency p` and paints dark ink on red. */
+  .what-to-say > div:not(.emergency) > p {
+    color: var(--ink-soft);
+  }
+
+  .ready-list {
+    counter-reset: item;
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem 0 0;
+    display: grid;
+    gap: 0.9rem;
+  }
+
+  .ready-list li {
+    position: relative;
+    margin: 0;
+    padding: 0 0 0 2.9rem;
+    font-size: 0.96rem;
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
+
+  .ready-list li::before {
+    counter-increment: item;
+    content: counter(item);
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    background: var(--navy);
+    border-radius: 50%;
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .ready-list strong {
+    color: var(--ink);
+  }
+
+  .emergency {
+    padding: 1.75rem;
+    background: linear-gradient(150deg, var(--red), var(--red-deep));
+    border-radius: var(--radius);
+    color: #fff;
+  }
+
+  .emergency :global(.icon) {
+    margin-bottom: 0.75rem;
+  }
+
+  .emergency h2 {
+    font-size: 1.65rem;
+    color: #fff;
+    margin-bottom: 0.5rem;
+  }
+
+  .emergency p {
+    font-size: 0.96rem;
+    line-height: 1.65;
+    color: #fff;
+  }
+
+  .emergency-note {
+    margin: 0 !important;
+    padding-top: 0.9rem;
+    border-top: 1px solid rgb(255 255 255 / 25%);
+    font-size: 0.88rem !important;
+    color: rgb(255 255 255 / 95%) !important;
+  }
+
+  /* ------------------------------------------------------------ map -- */
+
+  .map-frame {
+    height: clamp(300px, 45vw, 460px);
+    margin-top: 2.25rem;
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow);
+  }
+
+  .map-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+    margin: 1.75rem 0 0;
+  }
+</style>

@@ -1,0 +1,84 @@
+---
+import Icon from './Icon.astro';
+import { business } from '../data/site';
+
+interface Props {
+  heading?: string;
+  text?: string;
+}
+
+const {
+  heading = 'Stuck right now?',
+  text = 'One call, a real person, and a price before the truck rolls. We are open every hour of every day, including holidays.',
+} = Astro.props;
+---
+
+<section class="cta-band">
+  <div class="wrap cta-inner">
+    <div>
+      <h2>{heading}</h2>
+      <p>{text}</p>
+    </div>
+    <div class="cta-actions">
+      <a href={business.phoneHref} class="btn btn-primary cta-phone">
+        <Icon name="phone" size={22} />
+        {business.phoneDisplay}
+      </a>
+      <p class="cta-note">
+        <Icon name="clock" size={14} /> Answered 24/7 · Orillia &amp; area
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta-band {
+    background:
+      radial-gradient(760px 320px at 88% 120%, rgb(216 31 38 / 45%), transparent 60%),
+      linear-gradient(120deg, var(--navy-deep), var(--navy));
+    color: #fff;
+  }
+
+  .cta-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.75rem;
+    padding-block: clamp(2.5rem, 5.5vw, 3.6rem);
+  }
+
+  .cta-inner > div {
+    flex: 1 1 340px;
+  }
+
+  .cta-inner h2 {
+    color: #fff;
+    margin-bottom: 0.5rem;
+  }
+
+  .cta-inner p {
+    margin: 0;
+    color: rgb(255 255 255 / 80%);
+    max-width: 54ch;
+  }
+
+  .cta-actions {
+    flex: 0 1 auto;
+  }
+
+  .cta-phone {
+    font-size: clamp(1.4rem, 3.6vw, 1.85rem);
+    min-height: 62px;
+    padding-inline: 1.85rem;
+  }
+
+  .cta-note {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin: 0.7rem 0 0 !important;
+    font-size: 0.82rem;
+    color: var(--sky) !important;
+  }
+</style>

@@ -1,0 +1,66 @@
+---
+import Icon from './Icon.astro';
+import { business } from '../data/site';
+---
+
+<div class="call-bar">
+  <div class="call-bar-text">
+    <strong>Need a tow now?</strong>
+    <span>Answered 24/7</span>
+  </div>
+  <a href={business.phoneHref} class="btn btn-primary">
+    <Icon name="phone" size={19} />
+    Call
+  </a>
+</div>
+
+<style>
+  /* Persistent one-tap call target on phones. Hidden on tablet and up, where
+     the header call button is always visible anyway. */
+  .call-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 70;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.65rem 1rem calc(0.65rem + env(safe-area-inset-bottom));
+    background: rgb(6 36 106 / 96%);
+    backdrop-filter: blur(8px);
+    border-top: 1px solid rgb(255 255 255 / 12%);
+  }
+
+  .call-bar-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.25;
+    color: #fff;
+  }
+
+  .call-bar-text strong {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .call-bar-text span {
+    font-size: 0.76rem;
+    color: var(--sky);
+  }
+
+  .call-bar .btn {
+    min-height: 46px;
+    padding-inline: 1.4rem;
+  }
+
+  @media (min-width: 720px) {
+    .call-bar {
+      display: none;
+    }
+  }
+</style>

@@ -1,0 +1,442 @@
+---
+import Icon from './Icon.astro';
+import { business, nav } from '../data/site';
+
+const path = Astro.url.pathname;
+const isActive = (href: string) =>
+  href === '/' ? path === '/' : path === href || path.startsWith(href);
+---
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a href="/" class="brand" aria-label={`${business.name} — home`}>
+      <img
+        src="/media/logo.webp"
+        alt=""
+        width="112"
+        height="74"
+        decoding="async"
+      />
+      <span class="brand-text">
+        <span class="brand-name">Lakeside</span>
+        <span class="brand-sub">Towing &amp; Recovery</span>
+      </span>
+    </a>
+
+    <nav class="desktop-nav" aria-label="Main">
+      <ul>
+        {
+          nav.map((item) => (
+            <li class={item.children ? 'has-children' : ''}>
+              <a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>
+                {item.label}
+                {item.children && <Icon name="chevron-down" size={15} />}
+              </a>
+              {item.children && (
+                <ul class="submenu">
+                  {item.children.map((child) => (
+                    <li>
+                      <a href={child.href}>{child.label}</a>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="header-actions">
+      <a href={business.phoneHref} class="btn btn-primary call-btn">
+        <Icon name="phone" size={19} />
+        <span class="call-label">{business.phoneDisplay}</span>
+      </a>
+      <button
+        type="button"
+        class="menu-toggle"
+        aria-expanded="false"
+        aria-controls="mobile-nav"
+        data-menu-open
+      >
+        <Icon name="menu" size={24} />
+        <span class="visually-hidden">Open menu</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile drawer -->
+<div class="drawer-scrim" data-scrim hidden></div>
+<nav id="mobile-nav" class="drawer" aria-label="Mobile" hidden>
+  <div class="drawer-head">
+    <span class="drawer-title">Menu</span>
+    <button type="button" class="menu-toggle" data-menu-close>
+      <Icon name="x" size={24} />
+      <span class="visually-hidden">Close menu</span>
+    </button>
+  </div>
+
+  <ul class="drawer-list">
+    {
+      nav.map((item) => (
+        <li>
+          <a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>
+            {item.label}
+          </a>
+          {item.children && (
+            <ul class="drawer-sub">
+              {item.children.map((child) => (
+                <li>
+                  <a href={child.href}>{child.label}</a>
+                </li>
+              ))}
+            </ul>
+          )}
+        </li>
+      ))
+    }
+  </ul>
+
+  <div class="drawer-foot">
+    <a href={business.phoneHref} class="btn btn-primary" style="width:100%">
+      <Icon name="phone" size={19} />
+      {business.phoneDisplay}
+    </a>
+    <p class="drawer-note">Answered 24 hours a day, 7 days a week.</p>
+  </div>
+</nav>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 60;
+    background: rgb(255 255 255 / 92%);
+    backdrop-filter: saturate(180%) blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: var(--header-h);
+    padding-block: 8px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    text-decoration: none;
+    flex: none;
+  }
+
+  .brand img {
+    height: 46px;
+    width: auto;
+    border-radius: 6px;
+  }
+
+  .brand-text {
+    display: none;
+    flex-direction: column;
+    line-height: 1;
+  }
+
+  .brand-name {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--navy);
+  }
+
+  .brand-sub {
+    font-size: 0.66rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-top: 3px;
+  }
+
+  /* ---- desktop nav ---- */
+
+  .desktop-nav {
+    display: none;
+    margin-left: auto;
+  }
+
+  .desktop-nav ul {
+    display: flex;
+    align-items: center;
+    gap: 0.15rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .desktop-nav > ul > li > a {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.55rem 0.7rem;
+    border-radius: 8px;
+    font-family: var(--font-display);
+    font-size: 1.12rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+
+  .desktop-nav > ul > li > a:hover,
+  .desktop-nav > ul > li > a[aria-current='page'] {
+    color: var(--red);
+    background: var(--paper);
+  }
+
+  .has-children {
+    position: relative;
+  }
+
+  .submenu {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    display: block;
+    min-width: 244px;
+    padding: 0.4rem;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    box-shadow: var(--shadow-lg);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-6px);
+    transition: opacity 0.16s, transform 0.16s, visibility 0.16s;
+  }
+
+  .has-children:hover .submenu,
+  .has-children:focus-within .submenu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .submenu li {
+    margin: 0;
+  }
+
+  .submenu a {
+    display: block;
+    padding: 0.55rem 0.75rem;
+    border-radius: 7px;
+    font-size: 0.94rem;
+    font-weight: 500;
+    text-decoration: none;
+    color: var(--ink-soft);
+  }
+
+  .submenu a:hover {
+    background: var(--paper);
+    color: var(--red);
+  }
+
+  /* ---- actions ---- */
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex: none;
+  }
+
+  .call-btn {
+    min-height: 46px;
+    padding: 0.5rem 0.9rem;
+    font-size: 1.15rem;
+  }
+
+  .call-label {
+    display: none;
+  }
+
+  .menu-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    color: var(--navy);
+    cursor: pointer;
+  }
+
+  .menu-toggle:hover {
+    background: var(--sky-soft);
+  }
+
+  /* ---- drawer ---- */
+
+  .drawer-scrim {
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    background: rgb(6 36 106 / 55%);
+    backdrop-filter: blur(3px);
+  }
+
+  .drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 95;
+    display: flex;
+    flex-direction: column;
+    width: min(340px, 88vw);
+    height: 100dvh;
+    padding: 1.15rem;
+    overflow-y: auto;
+    background: #fff;
+    box-shadow: var(--shadow-lg);
+  }
+
+  .drawer[hidden],
+  .drawer-scrim[hidden] {
+    display: none;
+  }
+
+  .drawer-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .drawer-title {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--navy);
+  }
+
+  .drawer-list {
+    flex: 1;
+    list-style: none;
+    margin: 0.6rem 0 1.2rem;
+    padding: 0;
+  }
+
+  .drawer-list > li {
+    margin: 0;
+    border-bottom: 1px solid var(--line-soft);
+  }
+
+  .drawer-list > li > a {
+    display: block;
+    padding: 0.85rem 0.25rem;
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--ink);
+  }
+
+  .drawer-list > li > a[aria-current='page'] {
+    color: var(--red);
+  }
+
+  .drawer-sub {
+    list-style: none;
+    margin: 0 0 0.75rem;
+    padding: 0 0 0 0.9rem;
+    border-left: 2px solid var(--sky-soft);
+  }
+
+  .drawer-sub a {
+    display: block;
+    padding: 0.45rem 0.25rem;
+    font-size: 0.95rem;
+    text-decoration: none;
+    color: var(--ink-soft);
+  }
+
+  .drawer-sub a:hover {
+    color: var(--red);
+  }
+
+  .drawer-foot {
+    padding-top: 1rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .drawer-note {
+    margin: 0.65rem 0 0;
+    font-size: 0.82rem;
+    text-align: center;
+    color: var(--ink-faint);
+  }
+
+  /* ---- breakpoints ---- */
+
+  @media (min-width: 460px) {
+    .brand-text {
+      display: flex;
+    }
+    .call-label {
+      display: inline;
+    }
+  }
+
+  @media (min-width: 1040px) {
+    .desktop-nav {
+      display: block;
+    }
+    .menu-toggle {
+      display: none;
+    }
+    .header-actions {
+      margin-left: 1rem;
+    }
+  }
+</style>
+
+<script>
+  // Mobile drawer. The only JavaScript on the site.
+  const drawer = document.getElementById('mobile-nav');
+  const scrim = document.querySelector<HTMLElement>('[data-scrim]');
+  const openBtn = document.querySelector<HTMLButtonElement>('[data-menu-open]');
+  const closeBtn = document.querySelector<HTMLButtonElement>('[data-menu-close]');
+
+  if (drawer && scrim && openBtn && closeBtn) {
+    const setOpen = (open: boolean) => {
+      drawer.hidden = !open;
+      scrim.hidden = !open;
+      openBtn.setAttribute('aria-expanded', String(open));
+      document.documentElement.style.overflow = open ? 'hidden' : '';
+      if (open) closeBtn.focus();
+      else openBtn.focus();
+    };
+
+    openBtn.addEventListener('click', () => setOpen(true));
+    closeBtn.addEventListener('click', () => setOpen(false));
+    scrim.addEventListener('click', () => setOpen(false));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !drawer.hidden) setOpen(false);
+    });
+  }
+</script>

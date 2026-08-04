@@ -1,0 +1,264 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import RateTable from '../components/RateTable.astro';
+import FaqList from '../components/FaqList.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { business, rates, rateGroups, ratesDisclaimer } from '../data/site';
+
+const title = 'Towing Rates in Orillia | Lakeside Towing & Recovery';
+const description =
+  'Typical towing rates in Orillia: in-town tows $100-$200, long distance $200 + $3.50/km, winch-out $250/hr, boosts and lockouts $80. Quoted up front.';
+
+const trail = [{ name: 'Rates', href: '/rates/' }];
+
+const rateFaqs = [
+  {
+    q: 'How much does a tow cost in Orillia?',
+    a: `An in-town tow typically runs ${'$'}100 to ${'$'}200 depending on the vehicle, where it is and how much work the hook-up takes. Long distance is ${'$'}200 plus ${'$'}3.50 per kilometre. You will get a firm number on the phone before a truck is dispatched.`,
+  },
+  {
+    q: 'Why is there a range on the in-town price?',
+    a: 'Because the jobs are not identical. A running sedan in a flat, empty parking lot is quick. The same car nose-in against a curb on a busy street with the steering locked and no key takes longer and needs dollies. The range reflects real differences in the work, not a negotiating position.',
+  },
+  {
+    q: 'When do I need dollies, and what do they cost?',
+    a: `Dollies go under wheels that cannot roll freely — all-wheel-drive vehicles, seized brakes, locked steering, missing wheels. In town that is a flat ${'$'}45. On a long distance run it is ${'$'}50 plus ${'$'}0.50 per kilometre.`,
+  },
+  {
+    q: 'Is a ditch recovery charged as a tow?',
+    a: `No. Getting a vehicle back onto a driveable surface is a winch-out, billed at ${'$'}250 per hour for the time actually spent on scene. If the vehicle then needs to be towed, that is a separate charge. Many ditch calls end up being both.`,
+  },
+  {
+    q: 'Do you charge more at night, on weekends or on holidays?',
+    a: 'No. A boost at 3 a.m. on New Year\'s Day is the same $80 as a boost at noon on a Tuesday. Being 24/7 is not worth much if the price triples after dark.',
+  },
+  {
+    q: 'Will I be told the price before you come out?',
+    a: 'Yes, always. Describe the vehicle, the location and what has happened, and we will give you a firm price and a realistic arrival window on that call. Nothing is decided after the fact.',
+  },
+  {
+    q: 'What about vehicle storage?',
+    a: 'Storage is charged per day and depends on indoor or outdoor and the size of the vehicle, so it is quoted per job rather than listed here. If it is an insurance matter, tell us when you call so the billing is documented correctly.',
+  },
+];
+
+const faqSchema = {
+  '@type': 'FAQPage',
+  mainEntity: rateFaqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+
+const priceSchema = {
+  '@type': 'OfferCatalog',
+  name: 'Typical towing and roadside rates',
+  provider: { '@id': `${Astro.site!.origin}/#business` },
+  itemListElement: rates.map((r) => ({
+    '@type': 'Offer',
+    name: r.label,
+    description: r.note,
+    priceCurrency: 'CAD',
+    priceSpecification: {
+      '@type': 'PriceSpecification',
+      price: r.price.replace(/[^0-9.–-]/g, '').split(/[–-]/)[0],
+      priceCurrency: 'CAD',
+      valueAddedTaxIncluded: false,
+    },
+    itemOffered: { '@type': 'Service', name: r.label },
+  })),
+};
+---
+
+<Layout
+  title={title}
+  description={description}
+  breadcrumbs={trail}
+  schema={[faqSchema, priceSchema]}
+>
+  <PageHero
+    eyebrow="Pricing"
+    title="What a tow costs"
+    lede="Most towing companies will not put a number on a page. Here are ours. They are typical rates rather than a fixed price list, and you will always hear a firm number on the phone before a truck is dispatched."
+    trail={trail}
+    facts={['No after-hours surcharge', 'No membership fees', 'Quoted before dispatch']}
+    secondary={{ label: 'Our services', href: '/services/' }}
+  />
+
+  <section class="section">
+    <div class="wrap">
+      {
+        rateGroups.map((group) => (
+          <div class="rate-group">
+            <h2>{group}</h2>
+            <RateTable
+              only={rates.filter((r) => r.group === group).map((r) => r.key)}
+              showDisclaimer={false}
+            />
+          </div>
+        ))
+      }
+
+      <p class="disclaimer">
+        <Icon name="info" size={19} />
+        <span>{ratesDisclaimer}</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- =============================================== What moves price -- -->
+  <section class="section section-paper">
+    <div class="wrap">
+      <div class="center">
+        <p class="eyebrow">Transparency</p>
+        <h2>What moves the price</h2>
+        <hr class="rule" />
+        <p class="lede">
+          Four things account for nearly all the variation. None of them are a
+          surprise once you know they exist.
+        </p>
+      </div>
+
+      <div class="grid grid-4 factors">
+        <div class="card">
+          <Icon name="truck" size={24} />
+          <h3>The vehicle</h3>
+          <p>
+            Size and weight, but mostly whether the wheels turn. A vehicle that
+            rolls freely loads in minutes. One with seized brakes, locked
+            steering or all-wheel drive needs dollies.
+          </p>
+        </div>
+        <div class="card">
+          <Icon name="route" size={24} />
+          <h3>The distance</h3>
+          <p>
+            In town is a flat range. Anything beyond that is a base plus a
+            per-kilometre rate, so a longer run costs proportionally more rather
+            than being guessed at.
+          </p>
+        </div>
+        <div class="card">
+          <Icon name="anchor" size={24} />
+          <h3>The position</h3>
+          <p>
+            A car in a parking space is straightforward. A car in a ditch, a
+            snowbank, an underground garage or wedged between two others is
+            recovery work and takes time.
+          </p>
+        </div>
+        <div class="card">
+          <Icon name="alert-triangle" size={24} />
+          <h3>The conditions</h3>
+          <p>
+            Ice, deep snow, a live highway lane needing traffic control. We do
+            not surcharge for the hour of the day, but a job that takes twice as
+            long costs more.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================= No games -- -->
+  <section class="section section-navy">
+    <div class="wrap wrap-narrow center">
+      <p class="eyebrow">Our commitment</p>
+      <h2>No surprises at the roadside</h2>
+      <hr class="rule" />
+      <p class="lede" style="margin-inline:auto">
+        The worst thing in this industry is a driver who quotes one number on the
+        phone and hands over a different invoice once the vehicle is on the deck.
+        We do not do that. If something on scene genuinely changes the job — the
+        vehicle is further off the road than described, or it needs dollies we
+        were not told about — we tell you before we start, not after.
+      </p>
+      <a href={business.phoneHref} class="btn btn-primary" style="margin-top:1rem">
+        <Icon name="phone" size={21} />
+        {business.phoneDisplay}
+      </a>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap wrap-narrow">
+      <FaqList heading="Questions about pricing" faqs={rateFaqs} />
+    </div>
+  </section>
+
+  <CtaBand
+    heading="Want a number for your job?"
+    text="Tell us the vehicle, where it is and what has happened. We will give you a firm price and a realistic arrival window on that call."
+  />
+</Layout>
+
+<style>
+  .rate-group {
+    margin-bottom: 2.75rem;
+  }
+
+  .rate-group:last-of-type {
+    margin-bottom: 0;
+  }
+
+  .rate-group h2 {
+    font-size: clamp(1.5rem, 3vw, 1.9rem);
+    color: var(--navy-deep);
+    margin-bottom: 0.9rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 3px solid var(--red);
+    display: inline-block;
+  }
+
+  .disclaimer {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.7rem;
+    margin: 2.25rem 0 0;
+    padding: 1.15rem 1.3rem;
+    background: var(--sky-soft);
+    border-left: 4px solid var(--navy);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--navy-deep);
+  }
+
+  .disclaimer :global(.icon) {
+    flex: none;
+    margin-top: 3px;
+  }
+
+  .factors {
+    margin-top: 2.5rem;
+  }
+
+  .factors :global(.icon) {
+    padding: 10px;
+    width: 44px;
+    height: 44px;
+    background: var(--sky-soft);
+    border-radius: 11px;
+    color: var(--navy);
+    margin-bottom: 0.9rem;
+    box-sizing: content-box;
+  }
+
+  .factors h3 {
+    font-size: 1.26rem;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--navy-deep);
+    margin-bottom: 0.4rem;
+  }
+
+  .factors p {
+    margin: 0;
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
+</style>

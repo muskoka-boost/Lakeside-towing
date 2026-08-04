@@ -1,0 +1,134 @@
+---
+import Icon from './Icon.astro';
+import { rates, ratesDisclaimer } from '../data/site';
+
+interface Props {
+  /** Show only these rate keys. Defaults to the full list. */
+  only?: string[];
+  showDisclaimer?: boolean;
+  caption?: string;
+}
+
+const { only, showDisclaimer = true, caption } = Astro.props;
+const list = only ? only.map((k) => rates.find((r) => r.key === k)!).filter(Boolean) : rates;
+---
+
+<div class="rate-table">
+  <div class="table-scroll">
+    <table>
+      {caption && <caption>{caption}</caption>}
+      <thead>
+        <tr>
+          <th scope="col">Service</th>
+          <th scope="col">Typical rate</th>
+          <th scope="col" class="col-note">What it covers</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          list.map((r) => (
+            <tr>
+              <th scope="row">{r.label}</th>
+              <td class="price">
+                <span class="price-main">{r.price}</span>
+                {r.unit && <span class="price-unit">{r.unit}</span>}
+              </td>
+              <td class="col-note note">{r.note}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+
+  {
+    showDisclaimer && (
+      <p class="disclaimer">
+        <Icon name="info" size={17} />
+        <span>{ratesDisclaimer}</span>
+      </p>
+    )
+  }
+</div>
+
+<style>
+  caption {
+    padding: 0.9rem 1.1rem 0;
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-align: left;
+    color: var(--navy-deep);
+  }
+
+  tbody th {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+
+  .price {
+    white-space: nowrap;
+  }
+
+  .price-main {
+    font-family: var(--font-display);
+    font-size: 1.42rem;
+    font-weight: 700;
+    color: var(--red);
+    letter-spacing: 0.01em;
+  }
+
+  .price-unit {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--ink-faint);
+    margin-top: 1px;
+  }
+
+  .note {
+    font-size: 0.89rem;
+    color: var(--ink-soft);
+    min-width: 260px;
+  }
+
+  .disclaimer {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    margin: 1.1rem 0 0;
+    padding: 0.95rem 1.1rem;
+    background: var(--sky-soft);
+    border-left: 4px solid var(--navy);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: var(--navy-deep);
+  }
+
+  .disclaimer :global(.icon) {
+    flex: none;
+    margin-top: 2px;
+  }
+
+  /* The "what it covers" column is the first thing to go on a phone —
+     the price is what matters at 375px. Row labels are allowed to wrap so
+     the remaining two columns fit without a horizontal scroll. */
+  @media (max-width: 620px) {
+    .col-note {
+      display: none;
+    }
+
+    tbody th {
+      white-space: normal;
+    }
+
+    th,
+    td {
+      padding-inline: 0.85rem;
+    }
+  }
+</style>

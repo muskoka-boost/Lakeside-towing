@@ -1,0 +1,402 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { business, addressLine, credentials, allCommunities } from '../data/site';
+
+const title = 'About Us | OPP Approved Towing in Orillia | Lakeside';
+const description =
+  'Lakeside Towing & Recovery is a local, OPP approved towing company on Norweld Dr in Orillia. MTO Storage Certificate VS-212-186-623, licensed and insured.';
+
+const trail = [{ name: 'About', href: '/about/' }];
+
+const aboutSchema = {
+  '@type': 'AboutPage',
+  name: title,
+  description,
+  mainEntity: { '@id': `${Astro.site!.origin}/#business` },
+};
+---
+
+<Layout title={title} description={description} breadcrumbs={trail} schema={[aboutSchema]}>
+  <PageHero
+    eyebrow="About us"
+    title="Your trusted towing partner"
+    lede={`Lakeside Towing & Recovery is a local, full-service towing company based in Orillia. Short and long distance towing, enclosed transport for luxury and classic vehicles, recovery work, roadside assistance and MTO-licensed storage — and a truck on the road at any hour.`}
+    trail={trail}
+    facts={['OPP approved', 'MTO licensed', 'Based in Orillia', 'Open 24/7']}
+  />
+
+  <!-- ========================================================== Story -- -->
+  <section class="section">
+    <div class="wrap story">
+      <article class="prose">
+        <h2>&ldquo;We Meet by Accident!&rdquo;</h2>
+        <p>
+          It is written on the side of the truck, and it is the honest summary of
+          this business. Nobody plans to meet a tow operator. By the time you are
+          reading our number, something has already gone wrong — the car will not
+          start, the tank ran dry, the keys are visible on the driver&rsquo;s seat
+          through a locked window, or there has been a collision.
+        </p>
+        <p>
+          What we can control is what happens next. That means a person answering
+          the phone rather than a queue, a realistic arrival time rather than an
+          optimistic one, and a price agreed before a truck is dispatched rather
+          than presented once your vehicle is already on the deck.
+        </p>
+
+        <h2>Local, and that matters</h2>
+        <p>
+          Our yard is at {addressLine}. Not a mailbox, not a call-forwarding
+          number — the trucks and the storage are both here. A great many towing
+          numbers that surface in a search are dispatch brokers who sell your call
+          to whichever operator bids for it, which is how people end up waiting
+          two hours for a truck coming from somewhere else entirely.
+        </p>
+        <p>
+          Being based here also means we know the roads. Which stretches of
+          Highway 11 hold snow when the forecast says the roads are fine. Which
+          concession shoulders go soft in the spring thaw. Which cottage lanes off
+          Rama Road stop being plowed in December. That knowledge is the
+          difference between finding you quickly and driving past your turn twice.
+        </p>
+
+        <h2>What we actually do</h2>
+        <p>
+          Short and long distance towing, enclosed transport for classic and
+          luxury vehicles, winch-out and recovery, 24/7 emergency response,
+          battery boosts, lockouts, fuel delivery, and secure indoor and outdoor
+          vehicle storage. We serve Orillia and {allCommunities.length - 1} other
+          communities across Simcoe County and south Muskoka.
+        </p>
+        <p>
+          We are approved for Ontario Provincial Police calls, which means we work
+          collision scenes regularly and understand how they are managed. Worth
+          knowing: in Ontario, even when an officer arranges a tow at a scene, you
+          are entitled to choose your own tow operator and where your vehicle is
+          taken.
+        </p>
+      </article>
+
+      <aside class="story-aside">
+        <div class="quote-card">
+          <p class="quote">&ldquo;{business.tagline}&rdquo;</p>
+          <p class="quote-attr">— on the side of every truck</p>
+        </div>
+
+        <div class="fact-card">
+          <h2>At a glance</h2>
+          <dl>
+            <dt>Based in</dt>
+            <dd>Orillia, Ontario</dd>
+            <dt>Address</dt>
+            <dd>{addressLine}</dd>
+            <dt>Hours</dt>
+            <dd>24 hours, 7 days, 365 days</dd>
+            <dt>Phone</dt>
+            <dd><a href={business.phoneHref}>{business.phoneDisplay}</a></dd>
+            <dt>Email</dt>
+            <dd><a href={`mailto:${business.email}`}>{business.email}</a></dd>
+            <dt>Storage certificate</dt>
+            <dd>MTO {business.storageCertificate}</dd>
+          </dl>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ==================================================== Credentials -- -->
+  <section class="section section-navy">
+    <div class="wrap">
+      <div class="center">
+        <p class="eyebrow">Verified &amp; approved</p>
+        <h2>Credentials</h2>
+        <hr class="rule" />
+        <p class="lede" style="margin-inline:auto">
+          Towing is a licensed trade in Ontario for good reason. Here is exactly
+          what we hold.
+        </p>
+      </div>
+
+      <ul class="cred-grid grid grid-4">
+        {
+          credentials.map((c) => (
+            <li>
+              <Icon name="badge-check" size={26} />
+              <h3>{c.label}</h3>
+              <p>{c.detail}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- =================================================== Certificate -- -->
+  <section class="section">
+    <div class="wrap cert">
+      <div>
+        <p class="eyebrow">Documentation</p>
+        <h2>MTO Vehicle Storage Certificate</h2>
+        <hr class="rule" />
+        <p>
+          Certificate <strong>{business.storageCertificate}</strong>, issued by the
+          Ontario Ministry of Transportation. It is what allows us to legally
+          store vehicles, and it comes with obligations: proper records of what
+          came in, when and in what condition, and specific rules about notifying
+          owners and lienholders.
+        </p>
+        <p>
+          That paper trail is not bureaucracy for its own sake. When an insurer
+          starts asking questions about a total loss, or an adjuster needs to
+          establish when a vehicle arrived and in what state, the documented
+          record is the difference between a clean claim and a slow one. An
+          unlicensed lot keeping an eye on things has none of it.
+        </p>
+        <p>
+          <a href="/services/vehicle-storage/">More about our storage service →</a>
+        </p>
+      </div>
+
+      <figure class="cert-figure">
+        <img
+          src="/media/mto-vehicle-storage-certificate.webp"
+          alt={`Ontario Ministry of Transportation Vehicle Storage Certificate ${business.storageCertificate} issued to Lakeside Towing & Recovery`}
+          width="1100"
+          height="1414"
+          loading="lazy"
+          decoding="async"
+        />
+        <figcaption>
+          Ontario Ministry of Transportation Vehicle Storage Certificate
+          {business.storageCertificate}
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ====================================================== Standards -- -->
+  <section class="section section-paper">
+    <div class="wrap">
+      <div class="center">
+        <p class="eyebrow">How we work</p>
+        <h2>Four things we hold to</h2>
+        <hr class="rule" />
+      </div>
+
+      <div class="grid grid-2 standards">
+        <div class="card">
+          <h3>The quoted price is the price</h3>
+          <p>
+            You hear a number on the phone before a truck is dispatched, and that
+            is the number on the invoice. If something on scene genuinely changes
+            the job, we tell you before we start — not after your vehicle is
+            already loaded.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Honest arrival times</h3>
+          <p>
+            It is easy to say twenty minutes and turn up in ninety. We would
+            rather tell you it will be an hour and be right. On a snowstorm night
+            that honesty is worth more than optimism.
+          </p>
+        </div>
+        <div class="card">
+          <h3>No surcharge for the hour</h3>
+          <p>
+            A boost at 3 a.m. on a holiday costs the same as a boost at noon on a
+            Tuesday. Charging a premium for the hours when people are most stuck
+            is not how we want to run this.
+          </p>
+        </div>
+        <div class="card">
+          <h3>We say when we are not the answer</h3>
+          <p>
+            If a job needs a locksmith, a heavy-duty operator or a shop rather
+            than a tow, we will tell you that on the phone. Sending a truck to a
+            job we cannot finish helps nobody.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand />
+</Layout>
+
+<style>
+  .story {
+    display: grid;
+    gap: 2.5rem;
+    align-items: start;
+  }
+
+  @media (min-width: 980px) {
+    .story {
+      grid-template-columns: minmax(0, 1.6fr) minmax(270px, 0.8fr);
+      gap: 3.25rem;
+    }
+
+    .story-aside {
+      position: sticky;
+      top: calc(var(--header-h) + 20px);
+    }
+  }
+
+  .story-aside {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .quote-card {
+    padding: 1.6rem;
+    background: linear-gradient(150deg, var(--red), var(--red-deep));
+    border-radius: var(--radius);
+    color: #fff;
+    text-align: center;
+  }
+
+  .quote {
+    margin: 0 0 0.4rem;
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    font-style: italic;
+    line-height: 1.15;
+  }
+
+  .quote-attr {
+    margin: 0;
+    font-size: 0.78rem;
+    color: rgb(255 255 255 / 95%);
+  }
+
+  .fact-card {
+    padding: 1.5rem;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+
+  .fact-card h2 {
+    font-size: 1.12rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--navy-deep);
+    margin-bottom: 1rem;
+  }
+
+  .fact-card dl {
+    margin: 0;
+  }
+
+  .fact-card dt {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  .fact-card dd {
+    margin: 0.1rem 0 0.9rem;
+    font-size: 0.94rem;
+    color: var(--ink);
+    word-break: break-word;
+  }
+
+  .fact-card dd:last-child {
+    margin-bottom: 0;
+  }
+
+  .cred-grid {
+    list-style: none;
+    margin: 2.5rem 0 0;
+    padding: 0;
+  }
+
+  .cred-grid li {
+    margin: 0;
+    padding: 1.5rem;
+    background: rgb(255 255 255 / 6%);
+    border: 1px solid rgb(255 255 255 / 12%);
+    border-radius: var(--radius);
+  }
+
+  .cred-grid :global(.icon) {
+    color: var(--sky);
+    margin-bottom: 0.75rem;
+  }
+
+  .cred-grid h3 {
+    font-size: 1.24rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #fff;
+    margin-bottom: 0.35rem;
+  }
+
+  .cred-grid p {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: rgb(255 255 255 / 72%);
+  }
+
+  .cert {
+    display: grid;
+    gap: 2.5rem;
+    align-items: center;
+  }
+
+  @media (min-width: 900px) {
+    .cert {
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 3.25rem;
+    }
+  }
+
+  .cert p {
+    color: var(--ink-soft);
+  }
+
+  .cert-figure {
+    margin: 0;
+  }
+
+  .cert-figure img {
+    width: 100%;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .cert-figure figcaption {
+    margin-top: 0.75rem;
+    font-size: 0.8rem;
+    text-align: center;
+    color: var(--ink-faint);
+  }
+
+  .standards {
+    margin-top: 2.5rem;
+  }
+
+  .standards h3 {
+    font-size: 1.3rem;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--navy-deep);
+    margin-bottom: 0.4rem;
+  }
+
+  .standards p {
+    margin: 0;
+    font-size: 0.94rem;
+    line-height: 1.65;
+    color: var(--ink-soft);
+  }
+</style>

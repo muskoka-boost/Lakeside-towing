@@ -1,0 +1,18 @@
+{
+  "name": "lakeside-towing",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Marketing site for Lakeside Towing & Recovery, Orillia ON",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.0",
+    "astro": "^7.1.6"
+  }
+}

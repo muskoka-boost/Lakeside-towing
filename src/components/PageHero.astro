@@ -1,0 +1,120 @@
+---
+import Breadcrumbs from './Breadcrumbs.astro';
+import Icon from './Icon.astro';
+import { business } from '../data/site';
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  lede: string;
+  trail: { name: string; href: string }[];
+  /** Small pill row under the lede — e.g. price, response time. */
+  facts?: string[];
+  /** Secondary CTA. Override so a page never links to itself. */
+  secondary?: { label: string; href: string };
+}
+
+const {
+  eyebrow,
+  title,
+  lede,
+  trail,
+  facts = [],
+  secondary = { label: 'See our rates', href: '/rates/' },
+} = Astro.props;
+---
+
+<section class="page-hero">
+  <div class="wrap">
+    <Breadcrumbs trail={trail} light />
+    {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+    <h1>{title}</h1>
+    <hr class="rule" />
+    <p class="lede">{lede}</p>
+
+    {
+      facts.length > 0 && (
+        <ul class="facts">
+          {facts.map((f) => (
+            <li>
+              <Icon name="check" size={15} />
+              {f}
+            </li>
+          ))}
+        </ul>
+      )
+    }
+
+    <div class="hero-actions">
+      <a href={business.phoneHref} class="btn btn-primary">
+        <Icon name="phone" size={20} />
+        {business.phoneDisplay}
+      </a>
+      <a href={secondary.href} class="btn btn-ghost-light">{secondary.label}</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .page-hero {
+    position: relative;
+    background:
+      radial-gradient(1100px 420px at 78% -10%, rgb(21 82 191 / 55%), transparent 62%),
+      linear-gradient(170deg, var(--navy) 0%, var(--navy-deep) 100%);
+    color: #fff;
+    padding-block: 1.4rem clamp(2.6rem, 5vw, 3.9rem);
+    overflow: hidden;
+  }
+
+  .page-hero::after {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--red) 0%, var(--red) 22%, transparent 22%);
+  }
+
+  .page-hero .eyebrow {
+    margin-top: 1.5rem;
+  }
+
+  .page-hero h1 {
+    color: #fff;
+    max-width: 20ch;
+  }
+
+  .facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 0.75rem;
+    list-style: none;
+    margin: 1.35rem 0 0;
+    padding: 0;
+  }
+
+  .facts li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin: 0;
+    padding: 0.4rem 0.85rem;
+    background: rgb(255 255 255 / 10%);
+    border: 1px solid rgb(255 255 255 / 16%);
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+
+  .facts :global(.icon) {
+    color: var(--sky);
+    flex: none;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+    margin-top: 1.75rem;
+  }
+</style>

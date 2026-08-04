@@ -1,0 +1,86 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  /** Excludes Home, which is prepended. Last item renders as current page. */
+  trail: { name: string; href: string }[];
+  light?: boolean;
+}
+
+const { trail, light = false } = Astro.props;
+const items = [{ name: 'Home', href: '/' }, ...trail];
+---
+
+<nav class:list={['crumbs', { light }]} aria-label="Breadcrumb">
+  <ol>
+    {
+      items.map((item, i) => (
+        <li>
+          {i === items.length - 1 ? (
+            <span aria-current="page">{item.name}</span>
+          ) : (
+            <>
+              <a href={item.href}>{item.name}</a>
+              <Icon name="chevron-right" size={13} />
+            </>
+          )}
+        </li>
+      ))
+    }
+  </ol>
+</nav>
+
+<style>
+  .crumbs ol {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.3rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 0.82rem;
+  }
+
+  .crumbs li {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    margin: 0;
+  }
+
+  .crumbs a {
+    color: var(--ink-faint);
+    text-decoration: none;
+  }
+
+  .crumbs a:hover {
+    color: var(--red);
+    text-decoration: underline;
+  }
+
+  .crumbs :global(.icon) {
+    color: var(--line);
+  }
+
+  .crumbs span[aria-current] {
+    color: var(--ink-soft);
+    font-weight: 600;
+  }
+
+  .light a {
+    color: rgb(255 255 255 / 62%);
+  }
+
+  .light a:hover {
+    color: #fff;
+  }
+
+  .light :global(.icon) {
+    color: rgb(255 255 255 / 32%);
+  }
+
+  .light span[aria-current] {
+    color: var(--sky);
+  }
+</style>
